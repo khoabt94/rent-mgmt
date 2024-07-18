@@ -18,10 +18,15 @@ export class User {
   @Prop()
   avatar: string;
 
+  async validatePassword(password: string): Promise<boolean> {
+    return await bcrypt.compare(password, this.password);
+  }
+
 }
 
 export type UserDocument = HydratedDocument<User>
 export const UserSchema = SchemaFactory.createForClass(User);
+UserSchema.loadClass(User);
 
 UserSchema.pre('save', async function (next: NextFunction) {
   if (!this?.isModified('password')) {
