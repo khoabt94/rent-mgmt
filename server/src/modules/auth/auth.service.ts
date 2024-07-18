@@ -22,13 +22,13 @@ export class AuthService {
   async getMyInfo(userId: string) {
     const user = await this.UserModel.findById(userId)
     if (user) return user
-    else return new NotFoundException('Not found user info')
+    return new NotFoundException('Not found user info')
   }
 
   async updateMyInfo(userId: string, updateUserDto: UpdateUserDto) {
     const user = await this.UserModel.findByIdAndUpdate(userId, updateUserDto, { new: true })
     if (user) return user
-    else return new NotFoundException('Not found user info')
+    return new NotFoundException('Not found user info')
   }
 
 
