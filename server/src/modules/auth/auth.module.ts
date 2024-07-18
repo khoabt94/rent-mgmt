@@ -5,7 +5,16 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './schemas/user.schemas';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: User.name, schema: UserSchema }])],
+  imports: [MongooseModule.forFeatureAsync([
+    {
+      name: User.name,
+      useFactory: () => {
+        const schema = UserSchema;
+        schema.plugin(require('mongoose-unique-validator'));
+        return schema;
+      },
+    }
+  ])],
   controllers: [AuthController],
   providers: [AuthService],
 })
