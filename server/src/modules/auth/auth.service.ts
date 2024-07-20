@@ -24,9 +24,12 @@ export class AuthService {
   }
 
   async login({ email, password }: LoginDto) {
-    const user = await this.UserModel.findOne({ email }).select('+password')
+    const user = await this.UserModel.findOne({ email }).select('+password +is_active')
     if (!user || !(await user.validatePassword(password))) {
       return new UnauthorizedException("Thông tin không hợp lệ")
+    }
+    if (!user.is_active) {
+      return new UnauthorizedException("Tài khoản đã ngưng sử dụng. Vui lòng kích hoạt lại tài khoản!")
     }
     user.password = undefined
     return {
@@ -38,8 +41,17 @@ export class AuthService {
 
   async updateMyInfo(userId: string, updateUserDto: UpdateUserDto) {
     const user = await this.UserModel.findByIdAndUpdate(userId, updateUserDto, { new: true })
-    if (user) return user
-    return new NotFoundException('Không tìm thấy người dùng')
+    return user
+  }
+
+  async inactiveMyAccount(userId: string) {
+    await this.UserModel.findByIdAndUpdate(userId, { is_active: false }, { new: true })
+    return 'Inactivated!'
+  }
+
+  async reactiveMyAccount(userId: string) {
+    await this.UserModel.findByIdAndUpdate(userId, { is_active: true }, { new: true })
+    return 'Reactivated!'
   }
 
 

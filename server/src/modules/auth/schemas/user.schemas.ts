@@ -18,6 +18,9 @@ export class User {
   @Prop()
   avatar: string;
 
+  @Prop({ default: true, select: false })
+  is_active: boolean;
+
   async validatePassword(password: string): Promise<boolean> {
     return await bcrypt.compare(password, this.password);
   }

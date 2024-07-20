@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ObjectIdValidationPipe } from 'src/pipes/validation.pipe';
 import { LoginDto, RegisterDto, UpdateUserDto } from './dto/index.dto';
@@ -26,12 +26,27 @@ export class AuthController {
     return user;
   }
 
-  @Patch('user/:userId')
+  @Patch('user/:userId/update')
   updateMyInfo(
     @Param('userId', ObjectIdValidationPipe) userId: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
     return this.authService.updateMyInfo(userId, updateUserDto);
+  }
+
+  @Patch('user/:userId/inactive')
+  inactiveMyAccount(
+    @Param('userId', ObjectIdValidationPipe) userId: string,
+  ) {
+    return this.authService.inactiveMyAccount(userId);
+  }
+
+  @Public()
+  @Patch('user/:userId/reactive')
+  reactiveMyAccount(
+    @Param('userId', ObjectIdValidationPipe) userId: string,
+  ) {
+    return this.authService.reactiveMyAccount(userId);
   }
 
 }
