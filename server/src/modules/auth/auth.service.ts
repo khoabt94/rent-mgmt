@@ -28,7 +28,6 @@ export class AuthService {
     if (!user || !(await user.validatePassword(password))) {
       return new UnauthorizedException("Thông tin không hợp lệ")
     }
-    console.log('object');
     user.password = undefined
     return {
       access_token: this.jwtService.sign({ user_id: user._id, email }),
