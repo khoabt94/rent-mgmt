@@ -8,16 +8,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { useJWTServiceFactory } from 'src/lib/jwt';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { useMongoFactory } from 'src/lib/db';
 @Module({
   imports: [
     MongooseModule.forFeatureAsync([
       {
         name: User.name,
-        useFactory: () => {
-          const schema = UserSchema;
-          schema.plugin(require('mongoose-unique-validator'));
-          return schema;
-        },
+        useFactory: useMongoFactory,
       }
     ]),
     PassportModule,

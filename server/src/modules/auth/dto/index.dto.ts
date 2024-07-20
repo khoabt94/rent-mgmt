@@ -4,25 +4,25 @@ import { IsString, IsEmail, MinLength, MaxLength, IsOptional } from 'class-valid
 export class RegisterDto {
     @IsString()
     @MinLength(2, {
-        message: 'Name is too short',
+        message: 'Tên người dùng quá ngắn',
     })
     @MaxLength(50, {
-        message: 'Name is too long',
+        message: 'Tên người dùng quá dài',
     })
     name: string;
 
     @IsString()
     @IsEmail({}, {
-        message: 'Email must be a valid email'
+        message: 'Vui lòng điền email hợp lệ'
     })
     email: string;
 
     @IsString()
     @MinLength(2, {
-        message: 'Password is too short',
+        message: 'Mật khẩu quá ngắn',
     })
     @MaxLength(6, {
-        message: 'Password is too long',
+        message: 'Mật khẩu quá dài',
     })
     password: string;
 
