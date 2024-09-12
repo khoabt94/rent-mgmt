@@ -1,12 +1,22 @@
-import { Expose } from "class-transformer";
+import { Expose, Type } from "class-transformer";
+import { ValidateNested } from "class-validator";
+
+
+class ResponseUserObject {
+  @Expose()
+  readonly _id: string
+
+  @Expose()
+  readonly username: string;
+
+  @Expose()
+  readonly email: string;
+}
 
 export class ResponseUserDto {
+  @Type(() => ResponseUserObject)
+  @ValidateNested()
   @Expose()
-  _id: string
-
-  @Expose()
-  username: string;
-
-  @Expose()
-  email: string;
+  readonly user: ResponseUserObject
 }
+

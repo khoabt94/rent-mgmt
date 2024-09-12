@@ -4,7 +4,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/user.schema';
 import { Model } from 'mongoose';
 import { ResponseUserDto } from './dto/user-response.dto';
-import plainToInstance from 'src/helpers/plain-to-instance';
 
 @Injectable()
 export class UserService {
@@ -21,8 +20,6 @@ export class UserService {
     const createdUser = new this.userModel(createUserDto);
     const user = await createdUser.save();
 
-    return {
-      user: plainToInstance(ResponseUserDto, user)
-    }
+    return { user }
   }
 }
