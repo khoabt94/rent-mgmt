@@ -45,6 +45,7 @@ export function useAuthActions() {
             toastSuccess("Signup successfully. Will be login soon!")
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
+            console.log("🚀 ~ signUp ~ error:", error)
             toastError(error.message)
         }
     }

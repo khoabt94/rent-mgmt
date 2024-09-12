@@ -2,10 +2,10 @@ import { COOKIE_KEY } from "@/constants/cookie-key";
 import axios from "axios";
 import Cookies from 'js-cookie';
 
-const API_URL = import.meta.env.VITE_SUPABASE_API_URL
+const API_URL = import.meta.env.VITE_API_URL
 
 const AxiosInstance = axios.create({
-  baseURL: `${API_URL}/api`,
+  baseURL: API_URL,
   timeout: 20000,
   headers: {
     "Content-Type": "application/json",
@@ -28,15 +28,19 @@ AxiosInstance.interceptors.request.use(function (config) {
 });
 
 // Add a response interceptor
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 AxiosInstance.interceptors.response.use(function (response) {
-  console.log("🚀 ~ response:", response)
   // Any status code that lie within the range of 2xx cause this function to trigger
   // Do something with response data
   return response.data;
 }, function (error) {
   // Any status codes that falls outside the range of 2xx cause this function to trigger
   // Do something with response error
-  return Promise.reject(error.response.data.value);
+  const message = error.response.data.message
+  if (Array.isArray(message)) {
+    return Promise.reject({ message: message[0] });
+  }
+  return Promise.reject({ message });
 });
 
 export default AxiosInstance
