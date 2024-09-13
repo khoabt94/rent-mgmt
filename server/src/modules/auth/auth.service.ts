@@ -1,4 +1,5 @@
-import { CONFIG_KEY } from '@configs/env';
+import { CONFIG_KEY } from '@configs/env.config';
+import { ERRORS_DICTIONARY } from '@constraints/error-dictionary.constraint';
 import { CreateUserDto } from '@modules/user/dto/create-user.dto';
 import { User } from '@modules/user/schemas/user.schema';
 import { BadRequestException, Injectable } from '@nestjs/common';
@@ -20,7 +21,7 @@ export class AuthService {
 
     const findUser = await this.usersRepository.getOneByQuery({ email })
     if (findUser) {
-      throw new BadRequestException('Email đã tồn tại!')
+      throw new BadRequestException(ERRORS_DICTIONARY.EMAIL_EXISTED)
     }
 
     const user = await this.usersRepository.create(createUserDto);

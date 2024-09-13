@@ -26,7 +26,9 @@
       "@middlewares/*": ["src/middlewares/*"],
       "@interfaces/*": ["src/interfaces/*"],
       "@repositories/*": ["src/repositories/*"],
-      "@services/*": ["src/services/*"]
+      "@services/*": ["src/services/*"],
+      "@exception-filters/*": ["src/exception-filters/*"],
+      "@constraints/*": ["src/constraints/*"]
     }
   }
 }

@@ -11,6 +11,12 @@ class ResponseUserObject {
 
   @Expose()
   readonly email: string;
+
+  @Expose()
+  readonly avatar: string
+
+  @Expose()
+  readonly created_at: Date
 }
 
 export class ResponseUserDto {

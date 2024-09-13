@@ -110,7 +110,7 @@ export namespace Api {
     }
 
     interface LoginResponse extends User.Detail {
-      token: string
+      access_token: string
     }
 
     interface RefereshTokenResponse {

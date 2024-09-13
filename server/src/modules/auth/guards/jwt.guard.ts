@@ -1,3 +1,4 @@
+import { ERRORS_DICTIONARY } from '@constraints/error-dictionary.constraint';
 import { IS_PUBLIC_KEY } from '@decorators/auth.decorator';
 import { ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
@@ -22,7 +23,7 @@ export class JwtGuard extends AuthGuard('jwt') {
 
   handleRequest(err, user) {
     if (err || !user) {
-      throw err || new UnauthorizedException();
+      throw err || new UnauthorizedException(ERRORS_DICTIONARY.UNAUTHORIZED);
     }
     return user;
   }

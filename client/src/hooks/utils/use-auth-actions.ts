@@ -21,13 +21,12 @@ export function useAuthActions() {
     const login = async (payload: Api.AuthApi.LoginPayload) => {
         try {
             const res = await loginApi(payload)
-            console.log("🚀 ~ login ~ res:", res)
             setUser({
                 userId: res.userId,
                 username: res.username,
                 email: res.email,
             })
-            Cookies.set(COOKIE_KEY.ACCESS_TOKEN, res.token)
+            Cookies.set(COOKIE_KEY.ACCESS_TOKEN, res.access_token)
             navigate(siteConfig.paths.home())
             toastSuccess("Login successfully")
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
