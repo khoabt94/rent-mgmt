@@ -3,8 +3,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import configuration, { CONFIG_KEY } from './configs/env';
-import { UserModule } from './user/user.module';
+import configuration, { CONFIG_KEY } from '@configs/env';
+import { UserModule } from '@modules/user/user.module';
+import { AuthModule } from '@modules/auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtGuard } from '@modules/auth/guards/jwt.guard';
 
 @Module({
   imports: [
@@ -23,8 +26,15 @@ import { UserModule } from './user/user.module';
       inject: [ConfigService],
     }),
     UserModule,
+    AuthModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtGuard,
+    },
+  ],
 })
 export class AppModule { }
