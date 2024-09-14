@@ -10,6 +10,7 @@ import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { JwtGuard } from '@modules/auth/guards/jwt.guard';
 import { GlobalExceptionFilter } from '@exception-filters/global-exception.filter';
 import { AreaModule } from '@modules/area/area.module';
+import { RoomModule } from '@modules/room/room.module';
 
 @Module({
   imports: [
@@ -29,7 +30,8 @@ import { AreaModule } from '@modules/area/area.module';
     }),
     UserModule,
     AuthModule,
-    AreaModule
+    AreaModule,
+    RoomModule
   ],
   controllers: [AppController],
   providers: [

@@ -11,4 +11,11 @@ export const QUERY_KEY = {
         UPDATE_AREA: "UPDATE_AREA",
         DELETE_AREA: "DELETE_AREA",
     },
+    ROOM: {
+        GET_ROOMS: "GET_ROOMS",
+        GET_ROOM: "GET_ROOM",
+        CREATE_ROOM: "CREATE_ROOM",
+        UPDATE_ROOM: "UPDATE_ROOM",
+        DELETE_ROOM: "DELETE_ROOM",
+    },
 }

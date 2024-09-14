@@ -1,4 +1,5 @@
 export * from './common'
 export * from './api'
 export * from './area'
+export * from './room'
 export * from './user'

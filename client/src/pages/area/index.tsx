@@ -1,14 +1,23 @@
+import { Button } from "@/components/ui/button"
 import { useGetArea } from "@/hooks/queries"
+import { useOpenModal } from "@/hooks/utils/use-open-modal"
+import { CRUDRoomDrawer } from "@/lib/room/drawer/crud-room"
+import { RoomList } from "@/lib/room/list"
 import { useParams } from "react-router-dom"
 
 export function AreaDetailPage() {
   const { areaId } = useParams()
+  const { open } = useOpenModal()
 
   const { data: area } = useGetArea({
     area_id: areaId as string,
   })
 
-
+  const openCreateRoomDrawer = () => {
+    open(CRUDRoomDrawer, {
+      area_id: areaId
+    })
+  }
 
   return (
     <div className="">
@@ -25,7 +34,13 @@ export function AreaDetailPage() {
       </div>
 
       <div className="p-4 ">
-        {/* <TodoList /> */}
+        <Button
+          type="button"
+          variant={'outline'}
+          className="w-full border-gray-400 mb-4"
+          onClick={openCreateRoomDrawer}
+        >+ Tạo phòng</Button>
+        <RoomList />
       </div>
     </div>
   )

@@ -1,4 +1,5 @@
 import { Area } from "./area"
+import { Room } from "./room"
 import { User } from "./user"
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -100,6 +101,36 @@ export namespace Api {
     }
 
     interface UpdateAreaResponse {
+
+    }
+  }
+
+  namespace RoomApi {
+    interface CreateRoomPayload {
+      room_name: string
+      area: string
+    }
+
+    interface GetRoomsResponse extends BaseGetAllResponse<Room.Detail> {
+    }
+
+    interface GetRoomResponse extends Room.Detail {
+
+    }
+
+    interface GetRoomQuery {
+      area_id: string
+    }
+
+    interface CreateRoomResponse {
+
+    }
+
+    interface UpdateRoomPayload extends CreateRoomPayload {
+      room_id: string
+    }
+
+    interface UpdateRoomResponse {
 
     }
   }
