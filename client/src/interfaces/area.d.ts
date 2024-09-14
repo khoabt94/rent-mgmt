@@ -3,6 +3,6 @@
 export namespace Area {
     interface Detail {
         _id: number
-        areaName: string
+        area_name: string
     }
 }

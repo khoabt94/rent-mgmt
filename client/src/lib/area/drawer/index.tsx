@@ -14,6 +14,7 @@ import { Api, Area, Common } from "@/interfaces"
 import { useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import { CreatAreaForm } from "../create-form"
+import { useAuthStore } from "@/store"
 
 
 interface CreateAreaormRef {
@@ -31,11 +32,13 @@ enum MODE {
 
 export function CreateEditAreaDrawer({ initialValue, open = true, onClose }: CRUDTodoModalProps) {
     const { toastError, toastSuccess } = useToast()
+    const { user } = useAuthStore()
     const navigate = useNavigate()
     const createAreaFormRef = useRef<CreateAreaormRef>(null)
     const { mutateAsync: createAreaAsync } = useCreateArea()
     const { mutateAsync: updateAreaAsync } = useUpdateArea()
     const onSubmit = async () => {
+        if (!user) return
         try {
             const payload = await createAreaFormRef.current?.getData();
             if (!payload) return;
@@ -47,11 +50,13 @@ export function CreateEditAreaDrawer({ initialValue, open = true, onClose }: CRU
                     ...payload
                 })
                 navigate(siteConfig.paths.area(initialValue._id))
-                toastSuccess("Update project successfully!")
+                toastSuccess("Cập nhật khu nhà thành công!")
             } else {
-                const res = await createAreaAsync(payload)
-                console.log("🚀 ~ onSubmit ~ res:", res)
-                toastSuccess("Create project successfully!")
+                await createAreaAsync({
+                    ...payload,
+                    user: user._id
+                })
+                toastSuccess("Tạo khu nhà thành công!")
                 navigate(siteConfig.paths.area(1))
 
             }
@@ -71,7 +76,7 @@ export function CreateEditAreaDrawer({ initialValue, open = true, onClose }: CRU
         <Drawer open={open} onOpenChange={onOpenChange}>
             <DrawerContent>
                 <DrawerHeader>
-                    <DrawerTitle>{initialValue ? `Update ${initialValue.areaName} Project` : 'Create New Project'}</DrawerTitle>
+                    <DrawerTitle>{initialValue ? `Cập nhật khu nhà ${initialValue.area_name}` : 'Tạo khu nhà mới'}</DrawerTitle>
                 </DrawerHeader>
                 <DrawerDescription className="px-4 pb-10">
                     <CreatAreaForm ref={createAreaFormRef} initialValue={initialValue} />

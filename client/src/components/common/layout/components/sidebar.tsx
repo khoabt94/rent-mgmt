@@ -4,6 +4,7 @@ import { SheetContent, SheetHeader } from '@/components/ui/sheet'
 import { siteConfig } from '@/configs/site'
 import { useOpenModal } from '@/hooks/utils/use-open-modal'
 import { CreateEditAreaDrawer } from '@/lib/area/drawer'
+import { AreaList } from '@/lib/area/list'
 import { Plus } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
@@ -13,7 +14,7 @@ type Props = {
 
 export default function Sidebar({ closeNavbar }: Props) {
   const { open } = useOpenModal()
-  const openCreateProjectDrawer = () => {
+  const openCreateAreaDrawer = () => {
     open(CreateEditAreaDrawer, {})
     closeNavbar()
   }
@@ -31,7 +32,7 @@ export default function Sidebar({ closeNavbar }: Props) {
 
       <Accordion type="single" collapsible className="w-full">
 
-        <AccordionItem value="projects" className="border-none">
+        <AccordionItem value="areas" className="border-none">
           <AccordionTrigger className="hover:no-underline gap-x-3">
             <div className="flex-1 flex items-center justify-between">
               <p className="text-left truncate">
@@ -41,16 +42,14 @@ export default function Sidebar({ closeNavbar }: Props) {
                 type="button"
                 variant={"ghost"}
                 className='px-2'
-                onClick={openCreateProjectDrawer}
+                onClick={openCreateAreaDrawer}
               >
                 <Plus />
               </Button>
             </div>
           </AccordionTrigger>
           <AccordionContent>
-            <div className="flex gap-y-4 flex-col px-4">
-              <p>Khu nhà 92 VDPT</p>
-            </div>
+            <AreaList onClick={closeNavbar} />
           </AccordionContent>
         </AccordionItem>
 

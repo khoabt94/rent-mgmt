@@ -1,7 +1,9 @@
+import { siteConfig } from '@/configs/site';
 import { COOKIE_KEY } from '@/constants/cookie-key';
 import { User } from '@/interfaces';
 import { getMyInfo } from '@/services';
 import Cookies from 'js-cookie';
+import { redirect } from 'react-router-dom';
 import { create } from 'zustand';
 
 type IAuthStore = {
@@ -22,13 +24,13 @@ export const useAuthStore = create<IAuthStore>((set) => ({
     getUser: async () => {
         const accessToken = Cookies.get(COOKIE_KEY.ACCESS_TOKEN)
         if (!accessToken) {
-            throw new Error('Phiên đăng nhập hết hạn')
+            redirect(siteConfig.paths.login())
         }
         try {
             const res = await getMyInfo();
             set({ user: res.user })
         } catch (error) {
-            ///empty
+            console.log(error);
         } finally {
             set({ isFetchingUser: false })
         }

@@ -1,5 +1,6 @@
 import { siteConfig } from '@/configs/site';
 import { AccountInfoPage, AccountPasswordPage, HomePage } from '@/pages';
+import { AreaDetailPage } from '@/pages/area';
 
 export const privateRoutes = [
   {
@@ -13,5 +14,9 @@ export const privateRoutes = [
   {
     path: siteConfig.paths.accountPassword(),
     element: <AccountPasswordPage />,
+  },
+  {
+    path: siteConfig.paths.areaTemplate(),
+    element: <AreaDetailPage />,
   }
 ];

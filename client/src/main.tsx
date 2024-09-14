@@ -11,7 +11,13 @@ import { AppRoutes } from './routes/app-routes.tsx'
 import { AppProvider, AuthProvider } from '@/providers'
 import { ModalProvider } from './providers/modal/index.tsx'
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 600000,
+    },
+  },
+})
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

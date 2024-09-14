@@ -1,37 +1,40 @@
-import { Project } from '@/interfaces'
+import { Button } from '@/components/ui/button'
+import { siteConfig } from '@/configs/site'
+import { Area } from '@/interfaces'
+import { Pencil } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
-import { MenuActions } from './menu'
-import { useAuthStore } from '@/store'
-import { useMemo } from 'react'
 
 type Props = {
-  project: Project.Detail
+  area: Area.Detail
   onClick: () => void
+  onClickEdit: (_area: Area.Detail) => void
 }
 
-export function ProjectItem({ project, onClick }: Props) {
-  const { user } = useAuthStore()
-
-  const showActionBtns = useMemo(() => {
-    if (!user) return false;
-    return project.owner._id === user._id
-  }, [project, user])
+export function AreaItem({ area, onClickEdit, onClick }: Props) {
 
   return (
     <NavLink
       className={({ isActive }) =>
         isActive ? "font-medium bg-slate-100" : "bg-white"
       }
-      to={`/project/${project._id}`}
+      to={siteConfig.paths.area(area._id)}
+      onClick={onClick}
     >
       <div
-        className='w-full px-4 py-3 rounded-md shadow-md flex justify-between items-center'
+        className='w-full px-4 py-2 rounded-lg shadow border border-gray-200 flex justify-between items-center'
       >
         <p className=''>
-          {project.title}
+          {area.area_name}
         </p>
-        {showActionBtns ? <MenuActions project={project} onClick={onClick} /> : null}
-
+        {/* <MenuActions area={area} onClick={onClick} /> */}
+        <Button
+          type="button"
+          variant={"ghost"}
+          className='flex flex-row gap-x-3 opacity-80'
+          onClick={() => onClickEdit(area)}
+        >
+          <Pencil size={20} strokeWidth={1.5} />
+        </Button>
       </div>
     </NavLink>
   )

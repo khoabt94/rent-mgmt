@@ -4,3 +4,7 @@ export type GetAllResponse<T> = {
   // limit: number;
   items: T[]
 };
+
+export type GetSingleResponse<T> = {
+  item: T
+};

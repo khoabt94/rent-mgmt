@@ -16,19 +16,15 @@ import { useToast } from './use-toast';
 export function useAuthActions() {
     const { toastError, toastSuccess } = useToast()
     const navigate = useNavigate();
-    const { setUser, clearUser } = useAuthStore()
+    const { clearUser, getUser } = useAuthStore()
 
     const login = async (payload: Api.AuthApi.LoginPayload) => {
         try {
             const res = await loginApi(payload)
-            setUser({
-                userId: res.userId,
-                username: res.username,
-                email: res.email,
-            })
             Cookies.set(COOKIE_KEY.ACCESS_TOKEN, res.access_token)
-            navigate(siteConfig.paths.home())
             toastSuccess("Login successfully")
+            getUser()
+            navigate(siteConfig.paths.home())
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             toastError(error.message)
@@ -44,7 +40,6 @@ export function useAuthActions() {
             toastSuccess("Signup successfully. Will be login soon!")
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
-            console.log("🚀 ~ signUp ~ error:", error)
             toastError(error.message)
         }
     }

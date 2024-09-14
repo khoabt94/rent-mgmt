@@ -12,7 +12,7 @@ export const getAreas = async (
 
 export const getArea = async (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  area_id: number
+  area_id: string
 ): Promise<Api.AreaApi.GetAreaResponse> => {
   return await AxiosInstance.get(`${BASE_URL}/${area_id}`);
 };

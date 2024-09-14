@@ -3,6 +3,6 @@ export namespace User {
     interface Detail {
         username: string;
         email: string;
-        userId: number
+        _id: string
     }
 }

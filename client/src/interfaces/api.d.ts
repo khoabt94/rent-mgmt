@@ -1,63 +1,11 @@
-import { Status } from "@/enums"
-import { Todo } from "./todo"
-import { Common } from "./common"
+import { Area } from "./area"
 import { User } from "./user"
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 export namespace Api {
-
-  namespace TodoApi {
-    interface CreateTodoPayload {
-      title: string
-      should_notify: boolean
-      deadline: Date | undefined
-      priority: Priority
-      description: string
-      project: string
-    }
-    interface CreateTodoResponse {
-
-    }
-
-    interface GetTodosQuery {
-      project?: string
-      page?: number
-      limit?: number
-      deadline?: {
-        gte: string,
-        lte: string
-      },
-      sort?: string,
-      status?: string
-    }
-
-
-    interface GetTodosStatusCountQuery {
-      project: string
-    }
-
-    interface GetTodosStatusCountResponse {
-      statusCount: Todo.StatusCount[]
-    }
-
-    interface GetTodosResponse extends Common.Pagination {
-      todos: Todo.Detail[]
-    }
-
-    interface UpdateTodoPayload {
-      todo_id: string
-      title?: string
-      should_notify?: boolean
-      deadline?: Date | undefined
-      priority?: Priority
-      status?: Status
-      description?: string
-      project: string
-    }
-
-    interface UpdateTodoResponse {
-
-    }
+  interface BaseGetAllResponse<T> {
+    items: T[]
+    total: number
   }
 
 
@@ -128,19 +76,19 @@ export namespace Api {
 
   namespace AreaApi {
     interface CreateAreaPayload {
-      areaName: string
+      area_name: string
+      user: string
     }
 
-    interface GetAreasResponse {
-
+    interface GetAreasResponse extends BaseGetAllResponse<Area.Detail> {
     }
 
-    interface GetAreaResponse {
+    interface GetAreaResponse extends Area.Detail {
 
     }
 
     interface GetAreaQuery {
-      area_id: number
+      area_id: string
     }
 
     interface CreateAreaResponse {

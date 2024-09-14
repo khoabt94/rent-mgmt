@@ -6,9 +6,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const useGetAreas = (query: any, options: ReactQuery.Options) => {
+export const useGetAreas = (options: ReactQuery.Options) => {
     return useQuery<Api.AreaApi.GetAreasResponse>({
-        queryKey: [QUERY_KEY.AREA.GET_AREAS, query],
+        queryKey: [QUERY_KEY.AREA.GET_AREAS],
         queryFn: getAreas,
         ...options
     })
@@ -41,7 +41,8 @@ export const useUpdateArea = () => {
         mutationKey: [QUERY_KEY.AREA.UPDATE_AREA],
         mutationFn: updateArea,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.AREA.GET_AREAS] })
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.AREA.GET_AREAS], refetchType: 'all' })
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.AREA.GET_AREA] })
         },
     })
 }

@@ -9,6 +9,7 @@ import { AuthModule } from '@modules/auth/auth.module';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { JwtGuard } from '@modules/auth/guards/jwt.guard';
 import { GlobalExceptionFilter } from '@exception-filters/global-exception.filter';
+import { AreaModule } from '@modules/area/area.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { GlobalExceptionFilter } from '@exception-filters/global-exception.filte
       inject: [ConfigService],
     }),
     UserModule,
-    AuthModule
+    AuthModule,
+    AreaModule
   ],
   controllers: [AppController],
   providers: [

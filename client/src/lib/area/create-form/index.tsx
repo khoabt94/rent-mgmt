@@ -21,7 +21,7 @@ type Props = {
 export const CreatAreaForm = forwardRef(({ initialValue }: Props, ref) => {
     const form = useForm<yup.InferType<typeof AreaFormSchema>>({
         defaultValues: {
-            areaName: initialValue?.areaName || '',
+            area_name: initialValue?.area_name || '',
         },
         resolver: yupResolver(AreaFormSchema)
     })
@@ -42,7 +42,7 @@ export const CreatAreaForm = forwardRef(({ initialValue }: Props, ref) => {
             <form className="flex flex-col gap-y-5">
                 <FormField
                     control={form.control}
-                    name="areaName"
+                    name="area_name"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Tên khu nhà</FormLabel>
