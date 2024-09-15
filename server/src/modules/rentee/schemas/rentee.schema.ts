@@ -1,12 +1,11 @@
-
-
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument, Types } from 'mongoose';
-import { BaseEntity } from '@modules/shared/base/base.entity';
-import { Transform } from 'class-transformer';
-import { Area } from '@modules/area/schemas/area.schema';
 import { Room } from '@modules/room/schemas/room.schema';
-import { User } from '@modules/user/schemas/user.schema';
+import { RoomsRepository } from './../../../repositories/rooms/rooms.repository';
+
+
+import { BaseEntity } from '@modules/shared/base/base.entity';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Transform } from 'class-transformer';
+import mongoose, { HydratedDocument } from 'mongoose';
 
 export type RenteeDocument = HydratedDocument<Rentee>;
 
@@ -14,7 +13,7 @@ export type RenteeDocument = HydratedDocument<Rentee>;
   timestamps: {
     createdAt: 'created_at',
     updatedAt: 'updated_at',
-  },
+  }
 })
 export class Rentee extends BaseEntity {
   @Prop({
@@ -47,13 +46,6 @@ export class Rentee extends BaseEntity {
   room: mongoose.Schema.Types.ObjectId;
 
   @Prop({
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Area',
-    virtual: true
-  })
-  area: mongoose.Schema.Types.ObjectId
-
-  @Prop({
     required: true,
   })
   image_url: string
@@ -71,6 +63,16 @@ export class Rentee extends BaseEntity {
 
 export const RenteeSchema = SchemaFactory.createForClass(Rentee);
 
+export const RenteeSchemaFactory = () => {
+  const schema = RenteeSchema;
+
+  schema.pre(/^find/, function (next) {
+    //@ts-ignore
+    this.populate('room')
+    next()
+  })
+  return schema;
+};
 
 
 

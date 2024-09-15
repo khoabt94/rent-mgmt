@@ -1,3 +1,4 @@
+import { Room } from "./room"
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 export namespace Rentee {
@@ -6,7 +7,7 @@ export namespace Rentee {
         rentee_name: string
         rentee_id: string
         owner: string
-        room?: string
+        room?: Room.Detail
         area?: string
         image_url: string
         address: string,

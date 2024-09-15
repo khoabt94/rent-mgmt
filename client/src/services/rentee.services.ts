@@ -15,7 +15,7 @@ export const createRentee = async (
 };
 
 export const updateRentee = async (
-  { rentee_id, ...data }: Api.RenteeApi.UpdateRenteePayload
+  { id, ...data }: Api.RenteeApi.UpdateRenteePayload
 ): Promise<Api.RenteeApi.UpdateRenteeResponse> => {
-  return await AxiosInstance.patch(`${BASE_URL}/${rentee_id}`, data);
+  return await AxiosInstance.patch(`${BASE_URL}/${id}`, data);
 };

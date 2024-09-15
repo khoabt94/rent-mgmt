@@ -43,8 +43,8 @@ export const CreatRenteeForm = forwardRef(({ initialValue }: Props, ref) => {
             rentee_id: initialValue?.rentee_id || '',
             rentee_name: initialValue?.rentee_name || '',
             image_url: initialValue?.image_url || '',
-            // room: initialValue?.room || '',
-            // area: initialValue?.area || '',
+            room: initialValue?.room?._id || '',
+            area: initialValue?.room?.area || '',
             address: initialValue?.address || '',
             dob: initialValue?.dob || '',
             owner: initialValue?.dob || user?._id,
@@ -171,7 +171,8 @@ export const CreatRenteeForm = forwardRef(({ initialValue }: Props, ref) => {
                         <FormItem>
                             <Select
                                 onValueChange={(value: string) => {
-                                    field.onChange(Number(value))
+                                    console.log("🚀 ~ CreatRenteeForm ~ value:", value)
+                                    field.onChange(value)
                                     refetch()
                                 }}
                                 value={String(field.value)}
@@ -206,7 +207,7 @@ export const CreatRenteeForm = forwardRef(({ initialValue }: Props, ref) => {
                     render={({ field }) => (
                         <FormItem>
                             <Select
-                                onValueChange={(value: string) => field.onChange(Number(value))}
+                                onValueChange={(value: string) => field.onChange(value)}
                                 value={String(field.value)}
                             >
                                 <FormControl>
