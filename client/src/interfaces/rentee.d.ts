@@ -1,0 +1,14 @@
+
+/* eslint-disable @typescript-eslint/no-unused-vars */
+export namespace Rentee {
+    interface Detail {
+        _id: string
+        rentee_name: string
+        rentee_id: string
+        room?: string
+        area?: string
+        image_url: string
+        address: string,
+        dob: string,
+    }
+}

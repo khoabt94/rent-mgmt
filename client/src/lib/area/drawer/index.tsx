@@ -82,8 +82,8 @@ export function CreateEditAreaDrawer({ initialValue, open = true, onClose }: CRU
                     <CreatAreaForm ref={createAreaFormRef} initialValue={initialValue} />
                 </DrawerDescription>
                 <DrawerFooter className="flex w-full gap-x-2 flex-row">
-                    <Button variant="outline" className="flex-1" onClick={() => onClose?.()}>Cancel</Button>
-                    <Button className="flex-1" onClick={onSubmit}>Submit</Button>
+                    <Button variant="outline" className="flex-1" onClick={() => onClose?.()}>Thoát</Button>
+                    <Button className="flex-1" onClick={onSubmit}>Gửi</Button>
                 </DrawerFooter>
             </DrawerContent>
         </Drawer>

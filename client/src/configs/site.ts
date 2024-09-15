@@ -9,6 +9,7 @@ const paths = {
   notFound: () => '/404',
   area: (area_id: number) => `/area/${area_id}`,
   areaTemplate: () => '/area/:areaId',
+  rentee: () => '/rentee'
 };
 
 export const siteConfig = {

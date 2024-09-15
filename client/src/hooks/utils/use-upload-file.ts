@@ -2,6 +2,8 @@ import supabase from "@/utils/supabase";
 import { useToast } from "./use-toast";
 import { useState } from "react";
 
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+
 export function useUploadFile() {
   const { toastError } = useToast()
   const [isUploading, setIsUploading] = useState(false)
@@ -19,7 +21,7 @@ export function useUploadFile() {
       if (!data) {
         throw new Error("Fail to upload image")
       }
-      const imageString = `https://obywlnyadgngrnnnfiow.supabase.co/storage/v1/object/public/images/${data.path}`
+      const imageString = `${supabaseUrl}/storage/v1/object/public/images/${data.path}`
       onSuccess(imageString)
     } catch (error) {
       toastError("Fail to upload image")

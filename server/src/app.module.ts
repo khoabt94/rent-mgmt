@@ -11,6 +11,7 @@ import { JwtGuard } from '@modules/auth/guards/jwt.guard';
 import { GlobalExceptionFilter } from '@exception-filters/global-exception.filter';
 import { AreaModule } from '@modules/area/area.module';
 import { RoomModule } from '@modules/room/room.module';
+import { RenteeModule } from '@modules/rentee/rentee.module';
 
 @Module({
   imports: [
@@ -31,7 +32,8 @@ import { RoomModule } from '@modules/room/room.module';
     UserModule,
     AuthModule,
     AreaModule,
-    RoomModule
+    RoomModule,
+    RenteeModule
   ],
   controllers: [AppController],
   providers: [

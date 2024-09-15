@@ -7,4 +7,6 @@ export enum ERRORS_DICTIONARY {
   // INFO
   INFO_NOT_FOUND = 'Không tìm thấy thông tin',
 
+  NOT_OWNER_OF_RENTEE = 'Bạn không có quyền chỉnh sửa người thuê này'
+
 }

@@ -24,9 +24,9 @@ export class AuthService {
       throw new BadRequestException(ERRORS_DICTIONARY.EMAIL_EXISTED)
     }
 
-    const user = await this.usersRepository.create(createUserDto);
+    await this.usersRepository.create(createUserDto);
 
-    return { user }
+    return {}
   }
 
   async validateUser(email: string, password: string): Promise<User> {
