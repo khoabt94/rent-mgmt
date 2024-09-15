@@ -19,6 +19,7 @@ export const useCreateRentee = () => {
         mutationFn: createRentee,
         onSuccess: () => Promise.all([
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY.RENTEE.GET_RENTEES] }),
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ROOM.GET_ROOMS] }),
         ]),
     })
 }
@@ -31,6 +32,7 @@ export const useUpdateRentee = () => {
         mutationFn: updateRentee,
         onSuccess: () => Promise.all([
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY.RENTEE.GET_RENTEES] }),
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ROOM.GET_ROOMS] }),
         ]),
     })
 }

@@ -4,6 +4,7 @@ import mongoose, { HydratedDocument } from 'mongoose';
 import { BaseEntity } from '@modules/shared/base/base.entity';
 import { Transform } from 'class-transformer';
 import { Area } from '@modules/area/schemas/area.schema';
+import { Rentee } from '@modules/rentee/schemas/rentee.schema';
 
 export type RoomDocument = HydratedDocument<Room>;
 
@@ -28,11 +29,25 @@ export class Room extends BaseEntity {
     ref: 'Area',
     required: true
   })
-  area: Area;
+  area: mongoose.Schema.Types.ObjectId;
+
+  @Prop({
+    type: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Rentee',
+    }],
+  })
+  rentees: mongoose.Schema.Types.ObjectId[];
 
 }
 
 export const RoomSchema = SchemaFactory.createForClass(Room);
+
+
+export const RoomSchemaFactory = () => {
+  const schema = RoomSchema;
+  return schema;
+};
 
 
 

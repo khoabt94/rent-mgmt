@@ -1,11 +1,8 @@
-import { Room } from '@modules/room/schemas/room.schema';
-import { RoomsRepository } from './../../../repositories/rooms/rooms.repository';
-
-
+import { RoomDocument } from '@modules/room/schemas/room.schema';
 import { BaseEntity } from '@modules/shared/base/base.entity';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Transform } from 'class-transformer';
-import mongoose, { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument, Model, Schema as SchemaType } from 'mongoose';
 
 export type RenteeDocument = HydratedDocument<Rentee>;
 
@@ -63,14 +60,46 @@ export class Rentee extends BaseEntity {
 
 export const RenteeSchema = SchemaFactory.createForClass(Rentee);
 
-export const RenteeSchemaFactory = () => {
+export const RenteeSchemaFactory = (
+  roomDocument: Model<RoomDocument>,
+) => {
   const schema = RenteeSchema;
 
-  schema.pre(/^find/, function (next) {
-    //@ts-ignore
-    this.populate('room')
-    next()
+  const replaceRentee = async (roomId: SchemaType.Types.ObjectId, renteeId: any, next: mongoose.CallbackWithoutResultAndOptionalError) => {
+    const findRoomIn = await roomDocument.findById(roomId)
+    if (!findRoomIn) return next()
+
+    if (!(findRoomIn.rentees.find(r => r === renteeId))) {
+      findRoomIn.rentees.push(renteeId)
+      findRoomIn.save()
+    }
+
+    const findRoomOut = await roomDocument.findOne({
+      rentees: renteeId
+    })
+    if (findRoomOut) {
+      findRoomOut.rentees = findRoomOut.rentees.filter(r => r === renteeId)
+      findRoomOut.save()
+    }
+  }
+
+  schema.pre('save', async function (next) {
+    if (!this.room) return next();
+
+    await replaceRentee(this.room, this._id, next)
+
+    next();
   })
+
+  schema.pre('findOneAndUpdate', async function (next) {
+    const d: any = this.getUpdate()
+    const q: any = await this.model.findOne(this.getQuery())
+    if (!d.room) return next();
+    await replaceRentee(d.room, q._id, next)
+
+    next();
+  })
+
   return schema;
 };
 
