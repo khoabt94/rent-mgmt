@@ -5,5 +5,10 @@ export namespace Room {
         _id: string
         room_name: string
         area: string
+        rent_fee: number
+        rentees: {
+            _id: string
+            rentee_name: string
+        }[]
     }
 }

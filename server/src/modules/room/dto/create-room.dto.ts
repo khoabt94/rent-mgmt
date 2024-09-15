@@ -1,4 +1,4 @@
-import { IsMongoId, IsNotEmpty, IsString, MaxLength, MinLength } from "class-validator";
+import { IsMongoId, IsNotEmpty, IsNumber, IsString, MaxLength, Min, MinLength } from "class-validator";
 
 export class CreateRoomDto {
   @MaxLength(50, { message: 'Tên phòng không dài quá 50 ký tự' })
@@ -11,4 +11,9 @@ export class CreateRoomDto {
   @IsString()
   @IsNotEmpty({ message: 'Vui lòng cung cấp thông tin khu nhà của phòng này' })
   area: string;
+
+  @Min(0, { message: 'Vui lòng cung cấp giá thuê của phòng này' })
+  @IsNumber()
+  @IsNotEmpty({ message: 'Vui lòng cung cấp giá thuê của phòng này' })
+  rent_fee: number;
 }

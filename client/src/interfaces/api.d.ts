@@ -110,6 +110,7 @@ export namespace Api {
     interface CreateRoomPayload {
       room_name: string
       area: string
+      rent_fee: number
     }
 
     interface GetRoomsResponse extends BaseGetAllResponse<Room.Detail> {

@@ -25,6 +25,12 @@ export class Room extends BaseEntity {
   room_name: string;
 
   @Prop({
+    required: true,
+    min: 1,
+  })
+  rent_fee: number;
+
+  @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Area',
     required: true
