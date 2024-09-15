@@ -5,6 +5,7 @@ export namespace Rentee {
         _id: string
         rentee_name: string
         rentee_id: string
+        owner: string
         room?: string
         area?: string
         image_url: string

@@ -13,6 +13,7 @@ import { useGetAreas, useGetRooms } from "@/hooks/queries";
 import { useToast, useUploadFile } from "@/hooks/utils";
 import { IDInfo, Rentee } from "@/interfaces";
 import { RenteeFormSchema } from "@/schema";
+import { useAuthStore } from "@/store";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ChangeEvent, forwardRef, useImperativeHandle, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -31,6 +32,7 @@ const exampleInfo: IDInfo = {
 
 export const CreatRenteeForm = forwardRef(({ initialValue }: Props, ref) => {
     const { toastError } = useToast()
+    const { user } = useAuthStore()
     const { uploadFile } = useUploadFile()
     const { data: dataArea } = useGetAreas({})
     const areas = useMemo(() => dataArea?.items || [], [dataArea])
@@ -41,10 +43,11 @@ export const CreatRenteeForm = forwardRef(({ initialValue }: Props, ref) => {
             rentee_id: initialValue?.rentee_id || '',
             rentee_name: initialValue?.rentee_name || '',
             image_url: initialValue?.image_url || '',
-            room: initialValue?.room || '',
-            area: initialValue?.area || '',
+            // room: initialValue?.room || '',
+            // area: initialValue?.area || '',
             address: initialValue?.address || '',
             dob: initialValue?.dob || '',
+            owner: initialValue?.dob || user?._id,
         },
         resolver: yupResolver(RenteeFormSchema)
     })

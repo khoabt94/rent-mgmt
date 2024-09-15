@@ -1,4 +1,5 @@
 import { Area } from "./area"
+import { Rentee } from "./rentee"
 import { Room } from "./room"
 import { User } from "./user"
 
@@ -131,6 +132,40 @@ export namespace Api {
     }
 
     interface UpdateRoomResponse {
+
+    }
+  }
+
+  namespace RenteeApi {
+    interface CreateRenteePayload {
+      rentee_id: string;
+      rentee_name: string;
+      room?: string;
+      owner: string;
+      image_url: string
+      address: string
+      dob: string
+    }
+
+    interface GetRenteesResponse extends BaseGetAllResponse<Rentee.Detail> {
+    }
+
+    interface GetRenteeResponse extends Rentee.Detail {
+
+    }
+
+    interface GetRenteeQuery {
+    }
+
+    interface CreateRenteeResponse {
+
+    }
+
+    interface UpdateRenteePayload extends CreateRenteePayload {
+      id: string
+    }
+
+    interface UpdateRenteeResponse {
 
     }
   }

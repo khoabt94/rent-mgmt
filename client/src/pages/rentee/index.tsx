@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { useOpenModal } from "@/hooks/utils/use-open-modal"
 import { CreateEditRenteeDrawer } from "@/lib/rentee/drawer"
+import { RenteeList } from "@/lib/rentee/list"
 
 export function RenteePage() {
   const { open } = useOpenModal()
@@ -23,6 +24,7 @@ export function RenteePage() {
         >
           + Tạo người thuê
         </Button>
+        <RenteeList />
       </div>
     </div>
   )

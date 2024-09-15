@@ -7,6 +7,8 @@ export const RenteeFormSchema = yup.object().shape({
         .required('Cover image is a required field!'),
     image_url: yup.string()
         .required('Description is a required field!'),
+    owner: yup.string()
+        .required('Description is a required field!'),
     room: yup.string(),
     area: yup.string(),
     address: yup.string()

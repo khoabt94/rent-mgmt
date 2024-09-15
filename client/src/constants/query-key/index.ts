@@ -18,4 +18,11 @@ export const QUERY_KEY = {
         UPDATE_ROOM: "UPDATE_ROOM",
         DELETE_ROOM: "DELETE_ROOM",
     },
+    RENTEE: {
+        GET_RENTEES: "GET_RENTEES",
+        GET_RENTEE: "GET_RENTEE",
+        CREATE_RENTEE: "CREATE_RENTEE",
+        UPDATE_RENTEE: "UPDATE_RENTEE",
+        DELETE_RENTEE: "DELETE_RENTEE",
+    },
 }

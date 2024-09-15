@@ -1,33 +1,27 @@
-import { useGetAreas } from "@/hooks/queries"
-import { useMemo } from "react"
-import { AreaItem } from "./item"
-import { Area } from "@/interfaces"
-import { CreateEditAreaDrawer } from "../drawer"
+import { useGetRentees } from "@/hooks/queries/rentee"
 import { useOpenModal } from "@/hooks/utils/use-open-modal"
+import { Rentee } from "@/interfaces"
+import { useMemo } from "react"
+import { CreateEditRenteeDrawer } from "../drawer"
+import { RenteeItem } from "./item"
 
-type Props = {
-  onClick: () => void
-}
-
-export function AreaList({ onClick }: Props) {
-  const { data } = useGetAreas({})
-  const areas = useMemo(() => data?.items || [], [data])
+export function RenteeList() {
+  const { data } = useGetRentees()
+  const rentees = useMemo(() => data?.items || [], [data])
   const { open } = useOpenModal()
   // const { mutateAsync: deleteProject } = useDeleteProject()
-  const openUpdateAreaDrawer = (area: Area.Detail) => {
-    open(CreateEditAreaDrawer, {
-      initialValue: area
+  const openUpdateRenteeDrawer = (rentee: Rentee.Detail) => {
+    open(CreateEditRenteeDrawer, {
+      initialValue: rentee
     })
-    onClick()
   }
   return (
     <div className="flex flex-col gap-y-4 w-full">
-      {areas.length ? areas.map((area) => (
-        <AreaItem
-          onClick={onClick}
-          onClickEdit={openUpdateAreaDrawer}
-          area={area}
-          key={area._id}
+      {rentees.length ? rentees.map((rentee) => (
+        <RenteeItem
+          onClickEdit={openUpdateRenteeDrawer}
+          rentee={rentee}
+          key={rentee._id}
         />
       ))
         : <p className="w-full text-center italic">Không có khu nhà nào.<br />Hãy tạo một khu nhà nhé!</p>

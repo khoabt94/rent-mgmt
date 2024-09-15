@@ -7,18 +7,15 @@ import {
     DrawerHeader,
     DrawerTitle
 } from "@/components/ui/drawer"
-import { siteConfig } from "@/configs/site"
-import { useCreateArea, useUpdateArea } from "@/hooks/queries"
+import { useCreateRentee, useUpdateRentee } from "@/hooks/queries/rentee"
 import { useToast } from "@/hooks/utils"
-import { Api, Area, Common, Rentee } from "@/interfaces"
-import { useAuthStore } from "@/store"
+import { Api, Common, Rentee } from "@/interfaces"
 import { useRef } from "react"
-import { useNavigate } from "react-router-dom"
 import { CreatRenteeForm } from "../create-form"
 
 
-interface CreateAreaormRef {
-    getData: () => Api.AreaApi.CreateAreaPayload
+interface CreateRenteeFormRef {
+    getData: () => Api.RenteeApi.CreateRenteePayload
 }
 
 interface CRUDTodoModalProps extends Common.ModalProps {
@@ -32,40 +29,31 @@ enum MODE {
 
 export function CreateEditRenteeDrawer({ initialValue, open = true, onClose }: CRUDTodoModalProps) {
     const { toastError, toastSuccess } = useToast()
-    const { user } = useAuthStore()
-    const navigate = useNavigate()
-    const createRenteeFormRef = useRef<CreateAreaormRef>(null)
-    const { mutateAsync: createAreaAsync } = useCreateArea()
-    const { mutateAsync: updateAreaAsync } = useUpdateArea()
+    const createRenteeFormRef = useRef<CreateRenteeFormRef>(null)
+    const { mutateAsync: createAreaAsync } = useCreateRentee()
+    const { mutateAsync: updateAreaAsync } = useUpdateRentee()
     const onSubmit = async () => {
-        if (!user) return
-        // try {
-        //     const payload = await createRenteeFormRef.current?.getData();
-        //     if (!payload) return;
+        try {
+            const payload = await createRenteeFormRef.current?.getData();
+            if (!payload) return;
 
-        //     const mode = initialValue ? MODE.EDIT : MODE.CREATE
-        //     if (mode === MODE.EDIT) {
-        //         await updateAreaAsync({
-        //             area_id: initialValue._id,
-        //             ...payload
-        //         })
-        //         navigate(siteConfig.paths.area(initialValue._id))
-        //         toastSuccess("Cập nhật người thuê thành công!")
-        //     } else {
-        //         await createAreaAsync({
-        //             ...payload,
-        //             user: user._id
-        //         })
-        //         toastSuccess("Tạo người thuê thành công!")
-        //         navigate(siteConfig.paths.area(1))
+            const mode = initialValue ? MODE.EDIT : MODE.CREATE
+            if (mode === MODE.EDIT) {
+                await updateAreaAsync({
+                    id: initialValue._id,
+                    ...payload
+                })
+                toastSuccess("Cập nhật người thuê thành công!")
+            } else {
+                await createAreaAsync(payload)
+                toastSuccess("Tạo người thuê thành công!")
+            }
 
-        //     }
-
-        //     onClose?.()
-        //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // } catch (error: any) {
-        //     toastError(error.message)
-        // }
+            onClose?.()
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            toastError(error.message)
+        }
     }
 
     const onOpenChange = (flag: boolean) => {
