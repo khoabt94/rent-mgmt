@@ -79,7 +79,6 @@ export namespace Api {
   namespace AreaApi {
     interface CreateAreaPayload {
       area_name: string
-      user: string
     }
 
     interface GetAreasResponse extends BaseGetAllResponse<Area.Detail> {
@@ -93,12 +92,12 @@ export namespace Api {
       area_id: string
     }
 
-    interface CreateAreaResponse {
+    interface CreateAreaResponse extends Area.Detail {
 
     }
 
     interface UpdateAreaPayload extends CreateAreaPayload {
-      area_id: number
+      area_id: string
     }
 
     interface UpdateAreaResponse {
@@ -142,7 +141,6 @@ export namespace Api {
       rentee_id: string;
       rentee_name: string;
       room?: string;
-      owner: string;
       image_url: string
       address: string
       dob: string

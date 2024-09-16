@@ -6,9 +6,4 @@ export class CreateAreaDto {
   @IsString()
   @IsNotEmpty({ message: 'Vui lòng cung cấp tên khu nhà' })
   area_name: string;
-
-  @IsMongoId()
-  @IsString()
-  @IsNotEmpty({ message: 'Vui lòng cung cấp tên chủ khu nhà' })
-  user: string;
 }

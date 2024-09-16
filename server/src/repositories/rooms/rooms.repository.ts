@@ -20,6 +20,15 @@ export class RoomsRepository
     return await this.RoomModel
       .findOne(condition)
       .populate('rentees', 'rentee_name')
+      .populate('area')
+      .exec();
+  }
+
+  async getOneById(id: string): Promise<Room> {
+    return await this.RoomModel
+      .findById(id)
+      .populate('rentees', 'rentee_name')
+      .populate('area')
       .exec();
   }
 
@@ -29,7 +38,7 @@ export class RoomsRepository
   ): Promise<GetAllResponse<Room>> {
     const [count, items] = await Promise.all([
       this.RoomModel.countDocuments(condition),
-      this.RoomModel.find(condition, options?.projection, options).populate('rentees', 'rentee_name'),
+      this.RoomModel.find(condition, options?.projection, options).populate('rentees area', 'rentee_name').populate('area'),
     ]);
 
 

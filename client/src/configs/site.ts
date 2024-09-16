@@ -7,7 +7,7 @@ const paths = {
   accountInfo: () => '/account/info',
   accountPassword: () => '/account/password',
   notFound: () => '/404',
-  area: (area_id: number) => `/area/${area_id}`,
+  area: (area_id: string) => `/area/${area_id}`,
   areaTemplate: () => '/area/:areaId',
   rentee: () => '/rentee'
 };

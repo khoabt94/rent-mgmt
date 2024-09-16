@@ -15,8 +15,11 @@ export class RenteeService {
     return String(ownerId) === String(findRentee.owner)
   }
 
-  create(createRoomDto: CreateRenteeDto) {
-    return this.renteesRepository.create(createRoomDto)
+  create(createRoomDto: CreateRenteeDto, ownerId: string) {
+    return this.renteesRepository.create({
+      ...createRoomDto,
+      owner: ownerId
+    })
   }
 
   getAll(ownerId: string) {

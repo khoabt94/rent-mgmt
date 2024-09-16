@@ -17,10 +17,6 @@ export class CreateRenteeDto {
   room: mongoose.Schema.Types.ObjectId;
 
   @IsString()
-  @IsNotEmpty({ message: 'Vui lòng cung cấp chủ nhà' })
-  owner: mongoose.Schema.Types.ObjectId;
-
-  @IsString()
   @IsNotEmpty({ message: 'Vui lòng cung cấp hình ảnh CCCD' })
   image_url: string
 

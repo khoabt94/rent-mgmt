@@ -12,6 +12,7 @@ import { GlobalExceptionFilter } from '@exception-filters/global-exception.filte
 import { AreaModule } from '@modules/area/area.module';
 import { RoomModule } from '@modules/room/room.module';
 import { RenteeModule } from '@modules/rentee/rentee.module';
+import { CollectionModule } from '@modules/collection/collection.module';
 
 @Module({
   imports: [
@@ -33,7 +34,8 @@ import { RenteeModule } from '@modules/rentee/rentee.module';
     AuthModule,
     AreaModule,
     RoomModule,
-    RenteeModule
+    RenteeModule,
+    CollectionModule
   ],
   controllers: [AppController],
   providers: [

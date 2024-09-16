@@ -11,8 +11,8 @@ export class RenteeController {
   constructor(private readonly renteeService: RenteeService) { }
 
   @Post()
-  create(@Body() createRenteeDto: CreateRenteeDto) {
-    return this.renteeService.create(createRenteeDto);
+  create(@CurrentUser() owner: User, @Body() createRenteeDto: CreateRenteeDto) {
+    return this.renteeService.create(createRenteeDto, owner._id);
   }
 
   @Get()

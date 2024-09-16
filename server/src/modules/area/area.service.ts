@@ -10,8 +10,11 @@ export class AreaService {
     private readonly areasRepository: AreasRepository,
   ) { }
 
-  create(createAreaDto: CreateAreaDto) {
-    return this.areasRepository.create(createAreaDto)
+  create(createAreaDto: CreateAreaDto, userId: string) {
+    return this.areasRepository.create({
+      ...createAreaDto,
+      user: userId
+    })
   }
 
   getAll(userId: string) {
@@ -28,6 +31,7 @@ export class AreaService {
   }
 
   update(id: string, updateAreaDto: UpdateAreaDto) {
+    console.log({ id, updateAreaDto });
     return this.areasRepository.update(id, updateAreaDto)
   }
 

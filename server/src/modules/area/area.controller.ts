@@ -10,8 +10,8 @@ export class AreaController {
   constructor(private readonly areaService: AreaService) { }
 
   @Post()
-  create(@Body() createAreaDto: CreateAreaDto) {
-    return this.areaService.create(createAreaDto);
+  create(@CurrentUser() user: User, @Body() createAreaDto: CreateAreaDto) {
+    return this.areaService.create(createAreaDto, user._id);
   }
 
   @Get()
