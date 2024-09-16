@@ -13,6 +13,12 @@ export class RoomService {
     private readonly roomsRepository: RoomsRepository,
   ) { }
 
+  async validateOwner(ownerId: string, roomId: string) {
+    const findRoom = await this.getOneById(roomId)
+    if (!findRoom) return false
+    return String(ownerId) === String(findRoom.area.user)
+  }
+
   create(createRoomDto: CreateRoomDto) {
     return this.roomsRepository.create(createRoomDto)
   }
@@ -21,10 +27,8 @@ export class RoomService {
     return this.roomsRepository.getManyByQuery(condition as FilterQuery<Room>)
   }
 
-  getOne(id: string) {
-    return this.roomsRepository.getOneByQuery({
-      _id: id,
-    })
+  getOneById(id: string) {
+    return this.roomsRepository.getOneById(id)
   }
 
   update(id: string, updateRoomDto: UpdateRoomDto) {

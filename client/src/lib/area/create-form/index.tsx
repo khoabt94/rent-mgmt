@@ -1,3 +1,4 @@
+import CurrencyInput from "@/components/common/input/currency-input";
 import {
     Form,
     FormControl,
@@ -22,6 +23,8 @@ export const CreatAreaForm = forwardRef(({ initialValue }: Props, ref) => {
     const form = useForm<yup.InferType<typeof AreaFormSchema>>({
         defaultValues: {
             area_name: initialValue?.area_name || '',
+            electricity_unit_price: initialValue?.electricity_unit_price || 0,
+            water_unit_price: initialValue?.water_unit_price || 0,
         },
         resolver: yupResolver(AreaFormSchema)
     })
@@ -48,6 +51,44 @@ export const CreatAreaForm = forwardRef(({ initialValue }: Props, ref) => {
                             <FormLabel>Tên khu nhà</FormLabel>
                             <FormControl>
                                 <Input placeholder="Nhập tên khu nhà" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="electricity_unit_price"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Đơn giá điện</FormLabel>
+                            <FormControl>
+                                <CurrencyInput
+                                    {...field}
+                                    placeholder="Nhập đơn giá"
+                                    className={
+                                        "flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-800 dark:bg-gray-950 dark:ring-offset-gray-950 dark:placeholder:text-gray-400 dark:focus-visible:ring-gray-300"
+                                    }
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="water_unit_price"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Đơn giá nước</FormLabel>
+                            <FormControl>
+                                <CurrencyInput
+                                    {...field}
+                                    placeholder="Nhập đơn giá"
+                                    className={
+                                        "flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-800 dark:bg-gray-950 dark:ring-offset-gray-950 dark:placeholder:text-gray-400 dark:focus-visible:ring-gray-300"
+                                    }
+                                />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

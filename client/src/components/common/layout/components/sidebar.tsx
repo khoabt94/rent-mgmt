@@ -53,7 +53,18 @@ export default function Sidebar({ closeNavbar }: Props) {
             <AreaList onClick={closeNavbar} />
           </AccordionContent>
         </AccordionItem>
-
+        <AccordionItem value="rentee" className="border-none">
+          <AccordionTrigger className="hover:no-underline gap-x-3" showIcon={false} onClick={() => {
+            navigate(siteConfig.paths.rentee())
+            closeNavbar()
+          }}>
+            <div className="flex-1 flex items-center justify-between">
+              <p className="text-left truncate">
+                Người thuê
+              </p>
+            </div>
+          </AccordionTrigger>
+        </AccordionItem>
         <AccordionItem value="account" className="border-none">
           <AccordionTrigger className="hover:no-underline gap-x-3">
             <div className="flex-1 flex items-center justify-between">
@@ -69,18 +80,7 @@ export default function Sidebar({ closeNavbar }: Props) {
             </div>
           </AccordionContent>
         </AccordionItem>
-        <AccordionItem value="rentee" className="border-none">
-          <AccordionTrigger className="hover:no-underline gap-x-3" showIcon={false} onClick={() => {
-            navigate(siteConfig.paths.rentee())
-            closeNavbar()
-          }}>
-            <div className="flex-1 flex items-center justify-between">
-              <p className="text-left truncate">
-                Người thuê
-              </p>
-            </div>
-          </AccordionTrigger>
-        </AccordionItem>
+
       </Accordion>
 
 

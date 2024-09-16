@@ -30,6 +30,18 @@ export class Area extends BaseEntity {
   })
   user: User;
 
+  @Prop({
+    required: true,
+    min: 0,
+  })
+  electricity_unit_price: number;
+
+  @Prop({
+    required: true,
+    min: 0,
+  })
+  water_unit_price: number;
+
 }
 
 export const AreaSchema = SchemaFactory.createForClass(Area);

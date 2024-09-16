@@ -35,7 +35,7 @@ export class Room extends BaseEntity {
     ref: 'Area',
     required: true
   })
-  area: mongoose.Schema.Types.ObjectId;
+  area: Area;
 
   @Prop({
     type: [{
@@ -43,7 +43,7 @@ export class Room extends BaseEntity {
       ref: 'Rentee',
     }],
   })
-  rentees: mongoose.Schema.Types.ObjectId[];
+  rentees: Rentee[];
 
 }
 

@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
-import { RoomService } from './room.service';
-import { CreateRoomDto } from './dto/create-room.dto';
-import { UpdateRoomDto } from './dto/update-room.dto';
-import { QueryRoomDto } from './dto/query-room.dto';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
+import { RoomService } from '@modules/room/room.service';
+import { CreateRoomDto } from '@modules/room/dto/create-room.dto';
+import { UpdateRoomDto } from '@modules/room/dto/update-room.dto';
+import { QueryRoomDto } from '@modules/room/dto/query-room.dto';
+import { OwnerGuard } from '@modules/room/guards/check-owner.guard';
 
 @Controller('room')
 export class RoomController {
@@ -18,17 +19,20 @@ export class RoomController {
     return this.roomService.getAll(query);
   }
 
-  @Get(':id')
+  @UseGuards(OwnerGuard)
+  @Get(':roomId')
   findOne(@Param('id') id: string) {
-    return this.roomService.getOne(id);
+    return this.roomService.getOneById(id);
   }
 
-  @Patch(':id')
+  @UseGuards(OwnerGuard)
+  @Patch(':roomId')
   update(@Param('id') id: string, @Body() updateRoomDto: UpdateRoomDto) {
     return this.roomService.update(id, updateRoomDto);
   }
 
-  @Delete(':id')
+  @UseGuards(OwnerGuard)
+  @Delete(':roomId')
   remove(@Param('id') id: string) {
     return this.roomService.remove(id);
   }

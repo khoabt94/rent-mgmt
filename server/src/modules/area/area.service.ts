@@ -31,7 +31,6 @@ export class AreaService {
   }
 
   update(id: string, updateAreaDto: UpdateAreaDto) {
-    console.log({ id, updateAreaDto });
     return this.areasRepository.update(id, updateAreaDto)
   }
 
