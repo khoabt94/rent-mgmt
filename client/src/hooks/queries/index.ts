@@ -1,3 +1,5 @@
 export * from './area'
 export * from './user'
 export * from './room'
+export * from './rentee'
+export * from './collection'

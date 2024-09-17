@@ -4,6 +4,7 @@ import mongoose, { HydratedDocument } from 'mongoose';
 import { BaseEntity } from '@modules/shared/base/base.entity';
 import { User } from '@modules/user/schemas/user.schema';
 import { Transform } from 'class-transformer';
+import { Room } from '@modules/room/schemas/room.schema';
 
 export type AreaDocument = HydratedDocument<Area>;
 
@@ -18,7 +19,6 @@ export class Area extends BaseEntity {
     required: true,
     minlength: 5,
     maxlength: 50,
-    unique: true,
   })
   @Transform(({ value }: { value: string }) => value.trim())
   area_name: string;
@@ -29,6 +29,14 @@ export class Area extends BaseEntity {
     required: true
   })
   user: User;
+
+  @Prop({
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Room',
+    default: []
+  })
+  room: string[];
+
 
   @Prop({
     required: true,

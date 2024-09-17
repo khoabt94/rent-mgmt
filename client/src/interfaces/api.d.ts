@@ -1,4 +1,5 @@
 import { Area } from "./area"
+import { Collection } from "./collection"
 import { Rentee } from "./rentee"
 import { Room } from "./room"
 import { User } from "./user"
@@ -167,6 +168,22 @@ export namespace Api {
     interface UpdateRenteeResponse {
 
     }
+  }
+
+  namespace CollectionApi {
+    interface CreateCollectionPayload {
+      collection_name: string;
+      collection_items: {
+        room: string
+        area: string
+      }[];
+
+    }
+
+    interface CreateCollectionResponse extends Collection.Detail {
+
+    }
+
   }
 
 }

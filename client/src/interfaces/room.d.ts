@@ -10,5 +10,7 @@ export namespace Room {
             _id: string
             rentee_name: string
         }[]
+
+        is_selected: boolean
     }
 }

@@ -1,16 +1,18 @@
 import { ERRORS_DICTIONARY } from '@constraints/error-dictionary.constraint';
 import { Room } from '@modules/room/schemas/room.schema';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { RoomsRepository } from '@repositories/rooms/rooms.repository';
 import { FilterQuery, Schema, Types } from 'mongoose';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { QueryRoomDto } from './dto/query-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
+import { AreasRepository } from '@repositories/areas/areas.repository';
 
 @Injectable()
 export class RoomService {
   constructor(
     private readonly roomsRepository: RoomsRepository,
+    private readonly areasRepository: AreasRepository,
   ) { }
 
   async validateOwner(ownerId: string, roomId: string) {
@@ -19,8 +21,13 @@ export class RoomService {
     return String(ownerId) === String(findRoom.area.user)
   }
 
-  create(createRoomDto: CreateRoomDto) {
-    return this.roomsRepository.create(createRoomDto)
+  async create(createRoomDto: CreateRoomDto) {
+    const newRoom = await this.roomsRepository.create(createRoomDto)
+    const findArea = await this.areasRepository.getOneById(createRoomDto.area)
+    if (!findArea) throw new BadRequestException(ERRORS_DICTIONARY.INFO_NOT_FOUND)
+    findArea.room.push(newRoom._id);
+    this.areasRepository.update(findArea._id, findArea)
+    return newRoom
   }
 
   getAll(condition: QueryRoomDto) {

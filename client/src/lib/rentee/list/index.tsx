@@ -1,4 +1,4 @@
-import { useGetRentees } from "@/hooks/queries/rentee"
+import { useGetRentees } from "@/hooks/queries"
 import { useOpenModal } from "@/hooks/utils/use-open-modal"
 import { Rentee } from "@/interfaces"
 import { useMemo } from "react"

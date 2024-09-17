@@ -7,7 +7,7 @@ import {
     DrawerHeader,
     DrawerTitle
 } from "@/components/ui/drawer"
-import { useCreateRentee, useUpdateRentee } from "@/hooks/queries/rentee"
+import { useCreateRentee, useUpdateRentee } from "@/hooks/queries"
 import { useToast } from "@/hooks/utils"
 import { Api, Common, Rentee } from "@/interfaces"
 import { useRef } from "react"

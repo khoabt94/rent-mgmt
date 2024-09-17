@@ -78,8 +78,8 @@ export function CRUDRoomDrawer({ initialValue, open = true, onClose, area_id }: 
           />
         </DrawerDescription>
         <DrawerFooter className="flex w-full gap-x-2 flex-row">
-          <Button variant="outline" className="flex-1" onClick={() => onClose?.()}>Cancel</Button>
-          <Button className="flex-1" onClick={onSubmit}>Submit</Button>
+          <Button variant="outline" className="flex-1" onClick={() => onClose?.()}>Thoát</Button>
+          <Button className="flex-1" onClick={onSubmit}>Gửi</Button>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

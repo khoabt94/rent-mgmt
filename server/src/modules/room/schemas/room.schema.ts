@@ -19,7 +19,6 @@ export class Room extends BaseEntity {
     required: true,
     minlength: 1,
     maxlength: 50,
-    unique: true,
   })
   @Transform(({ value }: { value: string }) => value.trim())
   room_name: string;

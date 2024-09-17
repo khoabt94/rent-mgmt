@@ -43,7 +43,7 @@ export class CollectionService {
       const findRoom = await this.roomsRepository.getOneById(String(item.room))
       if (!findRoom) throw new NotFoundException(ERRORS_DICTIONARY.INFO_NOT_FOUND)
 
-      const findItems = latestCollection.collection_items.find(item => item.room === item.room)
+      const findItems = latestCollection ? latestCollection.collection_items.find(item => item.room === item.room) : {} as any
 
       return {
         ...item,

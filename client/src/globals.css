@@ -31,3 +31,9 @@
     height: 0;
   }
 }
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}

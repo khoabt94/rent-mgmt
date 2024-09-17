@@ -2,6 +2,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Button } from '@/components/ui/button'
 import { SheetContent, SheetHeader } from '@/components/ui/sheet'
 import { siteConfig } from '@/configs/site'
+import { useAuthActions } from '@/hooks/utils'
 import { useOpenModal } from '@/hooks/utils/use-open-modal'
 import { CreateEditAreaDrawer } from '@/lib/area/drawer'
 import { AreaList } from '@/lib/area/list'
@@ -14,12 +15,14 @@ type Props = {
 
 export default function Sidebar({ closeNavbar }: Props) {
   const { open } = useOpenModal()
+  const { logout } = useAuthActions()
   const navigate = useNavigate()
   const openCreateAreaDrawer = () => {
     open(CreateEditAreaDrawer, {})
     closeNavbar()
   }
   const openLogoutConfirm = () => {
+    logout()
     closeNavbar()
   }
   return (
@@ -32,7 +35,6 @@ export default function Sidebar({ closeNavbar }: Props) {
       </SheetHeader>
 
       <Accordion type="single" collapsible className="w-full">
-
         <AccordionItem value="areas" className="border-none">
           <AccordionTrigger className="hover:no-underline gap-x-3">
             <div className="flex-1 flex items-center justify-between">
@@ -54,6 +56,18 @@ export default function Sidebar({ closeNavbar }: Props) {
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="rentee" className="border-none">
+          <AccordionTrigger className="hover:no-underline gap-x-3" showIcon={false} onClick={() => {
+            navigate(siteConfig.paths.collection())
+            closeNavbar()
+          }}>
+            <div className="flex-1 flex items-center justify-between">
+              <p className="text-left truncate">
+                Kỳ thu tiền
+              </p>
+            </div>
+          </AccordionTrigger>
+        </AccordionItem>
+        <AccordionItem value="collection" className="border-none">
           <AccordionTrigger className="hover:no-underline gap-x-3" showIcon={false} onClick={() => {
             navigate(siteConfig.paths.rentee())
             closeNavbar()
