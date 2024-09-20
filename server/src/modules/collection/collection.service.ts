@@ -1,10 +1,10 @@
 import { ERRORS_DICTIONARY } from '@constraints/error-dictionary.constraint';
 import { CreateCollectionDto } from '@modules/collection/dto/create-collection.dto';
-import { UpdateCollectionItemDto } from '@modules/collection/dto/update-collection-item.dto';
-import { CollectionItemStatuses, CollectionStatuses } from '@modules/shared/constants/collection';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { CollectionStatuses } from '@modules/shared/constants/collection';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CollectionsRepository } from '@repositories/collections/collections.repository';
 import { RoomsRepository } from '@repositories/rooms/rooms.repository';
+import { UpdateCollectionDto } from './dto/update-collection.dto';
 
 @Injectable()
 export class CollectionService {
@@ -19,11 +19,11 @@ export class CollectionService {
     return String(ownerId) === String(findCollection.owner)
   }
 
-  async create(createCollectionDto: CreateCollectionDto, ownerId: string) {
-    const { collection_items } = createCollectionDto
+  async create(createCollectionDto: CreateCollectionDto, owner: string) {
+    const { room, end_electricity, end_water, other_fee, deduction } = createCollectionDto
 
     const latestCollectionResult = await this.collectionsRepository.getManyByQuery({
-      owner: ownerId
+      room,
     }, {
       sort: { 'created_at': -1 },
       limit: 1,
@@ -31,69 +31,52 @@ export class CollectionService {
 
     const { items } = latestCollectionResult
     const [latestCollection] = items
-    // if (
-    //   (new Date().getMonth() === new Date(latestCollection.created_at).getMonth())
-    //   &&
-    //   (new Date().getFullYear() === new Date(latestCollection.created_at).getFullYear())
-    // ) {
-    //   throw new BadRequestException(ERRORS_DICTIONARY.SAME_MONTH_COLLECTION_EXISTED)
-    // }
+    const findRoom = await this.roomsRepository.getOneById(String(room))
+    if (!findRoom) throw new NotFoundException(ERRORS_DICTIONARY.INFO_NOT_FOUND)
 
-    const modifiedCollectionItems = await Promise.all(collection_items.map(async (item) => {
-      const findRoom = await this.roomsRepository.getOneById(String(item.room))
-      if (!findRoom) throw new NotFoundException(ERRORS_DICTIONARY.INFO_NOT_FOUND)
 
-      const findItems = latestCollection ? latestCollection.collection_items.find(item => item.room === item.room) : {} as any
-
-      return {
-        ...item,
-        status: CollectionItemStatuses.DRAFT,
-        rent_fee: findRoom.rent_fee,
-        electricity_unit_price: findRoom.area.electricity_unit_price,
-        water_unit_price: findRoom.area.water_unit_price,
-        begin_electricity: findItems?.end_electricity || 0,
-        begin_water: findItems?.end_electricity || 0,
-      }
-    }))
-
+    const { rent_fee, area: { electricity_unit_price, water_unit_price } } = findRoom
+    const begin_electricity = latestCollection ? latestCollection.end_electricity : 0
+    const begin_water = latestCollection ? latestCollection.begin_water : 0
+    if ((begin_electricity > end_electricity)) {
+      throw new NotFoundException(ERRORS_DICTIONARY.UNSUITABLE_END_ELECTRICITY)
+    }
+    if ((begin_water > end_water)) {
+      throw new NotFoundException(ERRORS_DICTIONARY.UNSUITABLE_END_WATER)
+    }
+    const amount_due = rent_fee
+      + (end_electricity - begin_electricity) * electricity_unit_price
+      + (end_water - begin_water) * water_unit_price
+      + other_fee
+      + deduction
 
     return this.collectionsRepository.create({
       ...createCollectionDto,
       status: CollectionStatuses.DRAFT,
-      owner: ownerId,
-      collection_items: modifiedCollectionItems
+      owner,
+      amount_collect: 0,
+      rent_fee,
+      electricity_unit_price,
+      water_unit_price,
+      begin_electricity,
+      begin_water,
+      amount_due,
     })
   }
 
-  async updateCollectionItem(collectionId: string, roomId: string, updateCollectionItemDto: UpdateCollectionItemDto) {
+  async updateData(collectionId: string, updateCollectionDto: UpdateCollectionDto) {
     const findCollection = await this.getOneById(collectionId)
     if (!findCollection) throw new NotFoundException(ERRORS_DICTIONARY.INFO_NOT_FOUND)
+    const { begin_electricity, begin_water } = findCollection
+    const { end_electricity, end_water } = updateCollectionDto
+    if ((begin_electricity > end_electricity)) {
+      throw new NotFoundException(ERRORS_DICTIONARY.UNSUITABLE_END_ELECTRICITY)
+    }
+    if ((begin_water > end_water)) {
+      throw new NotFoundException(ERRORS_DICTIONARY.UNSUITABLE_END_WATER)
+    }
 
-    const findItem = findCollection.collection_items.find(item => String(item.room) === String(roomId))
-    if (!findItem) throw new NotFoundException(ERRORS_DICTIONARY.INFO_NOT_FOUND)
-
-    const { end_electricity, end_water, deduction, other_fee } = updateCollectionItemDto
-    if (end_electricity < findItem.begin_electricity) throw new BadRequestException(ERRORS_DICTIONARY.UNSUITABLE_END_ELECTRICITY)
-    if (end_water < findItem.begin_water) throw new BadRequestException(ERRORS_DICTIONARY.UNSUITABLE_END_WATER)
-
-    await this.collectionsRepository.updateKeyInItems({
-      _id: collectionId,
-    }, {
-      $set: {
-        'collection_items.$[].end_electricity': end_electricity,
-        'collection_items.$[].end_water': end_water,
-        'collection_items.$[].deduction': deduction,
-        'collection_items.$[].other_fee': other_fee,
-      }
-    }, {
-      arrayFilters: [
-        {
-          "i.room": roomId,
-        }
-      ]
-    })
-
-    return {}
+    await this.collectionsRepository.update(collectionId, updateCollectionDto)
   }
 
   getOneById(id: string) {

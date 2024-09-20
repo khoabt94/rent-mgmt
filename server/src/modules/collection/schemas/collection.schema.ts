@@ -2,7 +2,6 @@ import { BaseEntity } from '@modules/shared/base/base.entity';
 import { CollectionStatuses } from '@modules/shared/constants/collection';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
-import { CollectionItem } from '@modules/collection/schemas/item.schema';
 
 export type CollectionDocument = HydratedDocument<Collection>;
 
@@ -31,16 +30,82 @@ export class Collection extends BaseEntity {
     type: String,
     enum: CollectionStatuses,
     required: true,
+    default: CollectionStatuses.DRAFT
   })
   status: CollectionStatuses
 
   @Prop({
     default: 0
   })
-  total_amount_collect: number;
+  amount_collect: number;
 
-  @Prop({ type: [CollectionItem] })
-  collection_items: CollectionItem[]
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Room',
+    required: true
+  })
+  room: mongoose.Schema.Types.ObjectId;
+
+  @Prop({
+    required: true,
+    min: 1,
+  })
+  rent_fee: number;
+
+  @Prop({
+    required: true,
+    min: 0,
+  })
+  electricity_unit_price: number;
+
+  @Prop({
+    required: true,
+    min: 0,
+  })
+  water_unit_price: number;
+
+  @Prop({
+    required: true,
+    min: 0,
+  })
+  begin_electricity: number;
+
+  @Prop({
+    default: 0,
+    min: 0,
+  })
+  end_electricity: number;
+
+  @Prop({
+    required: true,
+    min: 0,
+  })
+  begin_water: number;
+
+  @Prop({
+    default: 0,
+    min: 0,
+    required: true,
+  })
+  end_water: number;
+
+  @Prop({
+    default: 0,
+    required: true,
+  })
+  other_fee: number;
+
+  @Prop({
+    default: 0,
+    required: true,
+  })
+  deduction: number;
+
+  @Prop({
+    default: 0,
+    required: true,
+  })
+  amount_due: number;
 
 }
 

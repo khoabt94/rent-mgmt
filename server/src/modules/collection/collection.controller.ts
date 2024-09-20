@@ -3,8 +3,8 @@ import { CollectionService } from '@modules/collection/collection.service';
 import { CreateCollectionDto } from '@modules/collection/dto/create-collection.dto';
 import { CurrentUser } from '@decorators/current-user.decorator';
 import { User } from '@modules/user/schemas/user.schema';
-import { UpdateCollectionItemDto } from '@modules/collection/dto/update-collection-item.dto';
 import { OwnerGuard } from '@modules/collection/guards/check-owner.guard';
+import { UpdateCollectionDto } from './dto/update-collection.dto';
 
 @Controller('collection')
 export class CollectionController {
@@ -16,13 +16,12 @@ export class CollectionController {
   }
 
   @UseGuards(OwnerGuard)
-  @Patch(':collectionId/item/:roomId')
+  @Patch(':collectionId')
   updateCollectionItem(
     @Param('collectionId') collectionId: string,
-    @Param('roomId') roomId: string,
-    @Body() updateCollectionItemDto: UpdateCollectionItemDto
+    @Body() updateCollectionDto: UpdateCollectionDto
   ) {
-    return this.collectionService.updateCollectionItem(collectionId, roomId, updateCollectionItemDto);
+    return this.collectionService.updateData(collectionId, updateCollectionDto);
   }
 
   // @Get()
