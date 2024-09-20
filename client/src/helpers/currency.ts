@@ -7,10 +7,9 @@ export const currencyFormatter = (num?: number | string): string => {
   if (!roundedNum || roundedNum === -1 || roundedNum === '-1') {
     formatted = '0';
   } else {
-    formatted = roundedNum.toString().split('.').join(',');
-    formatted = formatted.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    formatted = roundedNum.toString();
+    formatted = formatted.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 
-  console.log({ formatted });
   return formatted;
 };

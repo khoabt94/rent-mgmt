@@ -55,18 +55,7 @@ export default function Sidebar({ closeNavbar }: Props) {
             <AreaList onClick={closeNavbar} />
           </AccordionContent>
         </AccordionItem>
-        <AccordionItem value="rentee" className="border-none">
-          <AccordionTrigger className="hover:no-underline gap-x-3" showIcon={false} onClick={() => {
-            navigate(siteConfig.paths.collection())
-            closeNavbar()
-          }}>
-            <div className="flex-1 flex items-center justify-between">
-              <p className="text-left truncate">
-                Kỳ thu tiền
-              </p>
-            </div>
-          </AccordionTrigger>
-        </AccordionItem>
+
         <AccordionItem value="collection" className="border-none">
           <AccordionTrigger className="hover:no-underline gap-x-3" showIcon={false} onClick={() => {
             navigate(siteConfig.paths.rentee())

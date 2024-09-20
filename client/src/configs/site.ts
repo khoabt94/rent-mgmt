@@ -10,9 +10,6 @@ const paths = {
   area: (area_id: string) => `/area/${area_id}`,
   areaTemplate: () => '/area/:areaId',
   rentee: () => '/rentee',
-  collection: () => '/collection',
-  collectionDetail: (collection_id: string) => `/collection/${collection_id}`,
-  collectionTemplate: () => '/collection/:collectionId',
 };
 
 export const siteConfig = {

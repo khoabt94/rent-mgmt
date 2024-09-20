@@ -7,34 +7,27 @@ import {
   DrawerHeader,
   DrawerTitle
 } from "@/components/ui/drawer"
-import { useCreateCollection, useGetAreas } from "@/hooks/queries"
+import { useCreateCollection } from "@/hooks/queries"
 import { useToast } from "@/hooks/utils"
-import { Common, Area } from "@/interfaces"
-import { useMemo, useRef } from "react"
-import { CreatCollectionForm } from "../create-form"
-import { genCreateCollectionPayload } from "../helpers"
-import { useNavigate } from "react-router-dom"
-import { siteConfig } from "@/configs/site"
+import { Common, Room } from "@/interfaces"
+import { useRef } from "react"
+import { CreatCollectionForm } from "../form/create-form"
+import * as yup from 'yup';
+import { CollectionFormSchema } from "@/schema"
 
-export interface CreateCollectionFormData {
-  collection_name: string;
-  collection_items: Area.Detail[];
-
-}
+type CreateCollectionPayload = yup.InferType<typeof CollectionFormSchema>
 
 interface CreateCollectionFormRef {
-  getData: () => CreateCollectionFormData
+  getData: () => CreateCollectionPayload
 }
 
 interface CreateCollectionDrawerProps extends Common.ModalProps {
+  room: Room.Detail
 }
 
 
-export function CreateCollectionDrawer({ open, onOpenChange }: CreateCollectionDrawerProps) {
+export function CreateCollectionDrawer({ open = true, onClose, room }: CreateCollectionDrawerProps) {
   const { toastError, toastSuccess } = useToast()
-  const navigate = useNavigate()
-  const { data } = useGetAreas({})
-  const areas = useMemo(() => data?.items || [], [data])
   const createCollectionFormRef = useRef<CreateCollectionFormRef>(null)
   const { mutateAsync: createCollectionAsync } = useCreateCollection()
 
@@ -42,31 +35,35 @@ export function CreateCollectionDrawer({ open, onOpenChange }: CreateCollectionD
     try {
       const payload = await createCollectionFormRef.current?.getData();
       if (!payload) return;
-      const res = await createCollectionAsync(genCreateCollectionPayload(payload))
-      navigate(siteConfig.paths.collectionDetail(res._id))
+      payload.begin_electricity = undefined
+      payload.begin_water = undefined
+      await createCollectionAsync(payload)
       toastSuccess("Tạo kỳ thu tiền thành công")
 
-      onOpenChange?.(false)
+      onClose?.()
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toastError(error.message)
     }
   }
+  const onOpenChange = (flag: boolean) => {
+    if (!flag) onClose?.()
+  }
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent className="h-[70dvh]">
+      <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>Tạo kỳ thu tiền</DrawerTitle>
         </DrawerHeader>
         <DrawerDescription className="px-4 pb-10">
           <CreatCollectionForm
             ref={createCollectionFormRef}
-            areas={areas}
+            room={room}
           />
         </DrawerDescription>
         <DrawerFooter className="flex w-full gap-x-2 flex-row">
-          <Button variant="outline" className="flex-1" onClick={() => onOpenChange?.(false)}>Thoát</Button>
+          <Button variant="outline" className="flex-1" onClick={() => onClose?.()}>Thoát</Button>
           <Button className="flex-1" onClick={onSubmit}>Gửi</Button>
         </DrawerFooter>
       </DrawerContent>

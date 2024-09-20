@@ -173,10 +173,14 @@ export namespace Api {
   namespace CollectionApi {
     interface CreateCollectionPayload {
       collection_name: string;
-      collection_items: {
-        room: string
-        area: string
-      }[];
+      room: string
+      end_electricity: number;
+      end_water: number;
+      other_fee: number;
+      deduction: number;
+    }
+
+    interface GetLatestCollectionResponse extends BaseGetAllResponse<Collection.Detail> {
 
     }
 

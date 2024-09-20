@@ -9,6 +9,12 @@ export const getRooms = async (
   return await AxiosInstance.get(`${BASE_URL}?area=${area_id}`);
 };
 
+export const getRoom = async (
+  room: string,
+): Promise<Api.RoomApi.GetRoomResponse> => {
+  return await AxiosInstance.get(`${BASE_URL}/${room}`);
+};
+
 export const createRoom = async (
   data: Api.RoomApi.CreateRoomPayload
 ): Promise<Api.RoomApi.CreateRoomResponse> => {

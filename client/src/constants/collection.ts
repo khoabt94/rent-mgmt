@@ -4,9 +4,3 @@ export enum CollectionStatuses {
   COLLECTED = 'COLLECTED'
 }
 
-export enum CollectionItemStatuses {
-  DRAFT = 'DRAFT',
-  FINALIZED = 'FINALIZED',
-  COLLECTING = 'COLLECTING',
-  COLLECTED = 'COLLECTED'
-}

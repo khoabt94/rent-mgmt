@@ -10,6 +10,12 @@ export class AreaService {
     private readonly areasRepository: AreasRepository,
   ) { }
 
+  async validateOwner(ownerId: string, areaId: string) {
+    const findArea = await this.getOne(areaId)
+    if (!findArea) return false
+    return String(ownerId) === String(findArea.user)
+  }
+
   create(createAreaDto: CreateAreaDto, userId: string) {
     return this.areasRepository.create({
       ...createAreaDto,
@@ -23,11 +29,8 @@ export class AreaService {
     })
   }
 
-  getOne(id: string, userId: string) {
-    return this.areasRepository.getOneByQuery({
-      user: userId,
-      _id: id,
-    })
+  getOne(id: string) {
+    return this.areasRepository.getOneById(id)
   }
 
   update(id: string, updateAreaDto: UpdateAreaDto) {

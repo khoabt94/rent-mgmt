@@ -8,3 +8,9 @@ export const createCollection = async (
 ): Promise<Api.CollectionApi.CreateCollectionResponse> => {
   return await AxiosInstance.post(BASE_URL, data);
 };
+
+export const getLatestCollection = async (
+  room: string
+): Promise<Api.CollectionApi.GetLatestCollectionResponse> => {
+  return await AxiosInstance.get(`${BASE_URL}/latest?room=${room}`);
+};

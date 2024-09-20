@@ -22,12 +22,7 @@ export class CollectionService {
   async create(createCollectionDto: CreateCollectionDto, owner: string) {
     const { room, end_electricity, end_water, other_fee, deduction } = createCollectionDto
 
-    const latestCollectionResult = await this.collectionsRepository.getManyByQuery({
-      room,
-    }, {
-      sort: { 'created_at': -1 },
-      limit: 1,
-    })
+    const latestCollectionResult = await this.getLatestCollection(String(room))
 
     const { items } = latestCollectionResult
     const [latestCollection] = items
@@ -81,5 +76,14 @@ export class CollectionService {
 
   getOneById(id: string) {
     return this.collectionsRepository.getOneById(id)
+  }
+
+  getLatestCollection(room: string) {
+    return this.collectionsRepository.getManyByQuery({
+      room,
+    }, {
+      sort: { 'created_at': -1 },
+      limit: 1,
+    })
   }
 }

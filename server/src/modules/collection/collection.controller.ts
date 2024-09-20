@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { CollectionService } from '@modules/collection/collection.service';
 import { CreateCollectionDto } from '@modules/collection/dto/create-collection.dto';
 import { CurrentUser } from '@decorators/current-user.decorator';
@@ -22,6 +22,14 @@ export class CollectionController {
     @Body() updateCollectionDto: UpdateCollectionDto
   ) {
     return this.collectionService.updateData(collectionId, updateCollectionDto);
+  }
+
+  @UseGuards(OwnerGuard)
+  @Get('/latest')
+  getLatestCollection(
+    @Query('room') room: string,
+  ) {
+    return this.collectionService.getLatestCollection(room);
   }
 
   // @Get()
