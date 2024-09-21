@@ -7,7 +7,7 @@ import { useOpenModal } from '@/hooks/utils/use-open-modal'
 import { CreateEditAreaDrawer } from '@/lib/area/drawer'
 import { AreaList } from '@/lib/area/list'
 import { Plus } from 'lucide-react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 type Props = {
   closeNavbar: () => void
@@ -68,7 +68,7 @@ export default function Sidebar({ closeNavbar }: Props) {
             </div>
           </AccordionTrigger>
         </AccordionItem>
-        <AccordionItem value="account" className="border-none">
+        {/* <AccordionItem value="account" className="border-none">
           <AccordionTrigger className="hover:no-underline gap-x-3">
             <div className="flex-1 flex items-center justify-between">
               <p className="text-left truncate">
@@ -82,7 +82,7 @@ export default function Sidebar({ closeNavbar }: Props) {
               <Link to={siteConfig.paths.accountPassword()}>Đổi mật khẩu</Link>
             </div>
           </AccordionContent>
-        </AccordionItem>
+        </AccordionItem> */}
 
       </Accordion>
 

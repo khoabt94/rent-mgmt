@@ -11,18 +11,21 @@ import {
 import Cookies from 'js-cookie';
 import { siteConfig } from '@/configs/site';
 import { useToast } from './use-toast';
+import { useQueryClient } from '@tanstack/react-query';
+
 
 
 export function useAuthActions() {
     const { toastError, toastSuccess } = useToast()
     const navigate = useNavigate();
     const { clearUser, getUser } = useAuthStore()
+    const queryClient = useQueryClient()
 
     const login = async (payload: Api.AuthApi.LoginPayload) => {
         try {
             const res = await loginApi(payload)
             Cookies.set(COOKIE_KEY.ACCESS_TOKEN, res.access_token)
-            toastSuccess("Login successfully")
+            toastSuccess("Đăng nhập thành công")
             getUser()
             navigate(siteConfig.paths.home())
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -37,7 +40,7 @@ export function useAuthActions() {
             // setUser(res.user)
             // Cookies.set(COOKIE_KEY.ACCESS_TOKEN, res.access_token)
             navigate(siteConfig.paths.login())
-            toastSuccess("Signup successfully. Will be login soon!")
+            toastSuccess("Đăng ký thành công, Vui lòng đăng nhập")
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             toastError(error.message)
@@ -46,9 +49,10 @@ export function useAuthActions() {
 
     const logout = async () => {
         clearUser()
+        queryClient.clear()
         Cookies.remove(COOKIE_KEY.ACCESS_TOKEN)
         navigate(siteConfig.paths.login())
-        toastSuccess("Logout successfully")
+        toastSuccess("Đăng xuất thành công")
     }
 
     const createResetPasswordToken = async (payload: Api.AuthApi.CreateResetPasswordPayload) => {
