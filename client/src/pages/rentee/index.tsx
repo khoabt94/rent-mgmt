@@ -1,32 +1,32 @@
 import { Button } from "@/components/ui/button"
-import { useOpenModal } from "@/hooks/utils/use-open-modal"
 import { CreateEditRenteeDrawer } from "@/lib/rentee/drawer"
 import { RenteeList } from "@/lib/rentee/list"
+import { Plus } from "lucide-react"
+import { useState } from "react"
 
 export function RenteePage() {
-  const { open } = useOpenModal()
-
+  const [isOpenDrawer, setIsOpenDrawer] = useState(false)
 
   const openCreateRenteeDrawer = () => {
-    open(CreateEditRenteeDrawer, {
-    })
+    setIsOpenDrawer(true)
   }
 
   return (
-    <div className="">
+    <>
 
       <div className="p-4 ">
-        <Button
-          type="button"
-          variant={'outline'}
-          className="w-full border-gray-400 mb-4"
-          onClick={openCreateRenteeDrawer}
-        >
-          + Tạo người thuê
-        </Button>
         <RenteeList />
       </div>
-    </div>
+      <Button
+        type="button"
+        variant={'outline'}
+        className="flex items-center justify-center rounded-full size-10 fixed right-5 bottom-5 bg-gray-900 z-50 !p-0"
+        onClick={openCreateRenteeDrawer}
+      >
+        <Plus color="#ffffff" size={20} strokeWidth={4} />
+      </Button>
+      <CreateEditRenteeDrawer open={isOpenDrawer} onOpenChange={setIsOpenDrawer} />
+    </>
   )
 }
 

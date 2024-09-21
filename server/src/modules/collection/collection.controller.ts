@@ -5,6 +5,7 @@ import { CurrentUser } from '@decorators/current-user.decorator';
 import { User } from '@modules/user/schemas/user.schema';
 import { OwnerGuard } from '@modules/collection/guards/check-owner.guard';
 import { UpdateCollectionDto } from './dto/update-collection.dto';
+import { QueryCollectionDto } from './dto/query-collection.dto';
 
 @Controller('collection')
 export class CollectionController {
@@ -32,10 +33,13 @@ export class CollectionController {
     return this.collectionService.getLatestCollection(room);
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.collectionService.findAll();
-  // }
+  @Get()
+  findAll(@CurrentUser() owner: User, @Query() queryCollectionDto: QueryCollectionDto) {
+    return this.collectionService.getAll({
+      owner: owner._id,
+      ...queryCollectionDto
+    });
+  }
 
   // @Get(':id')
   // findOne(@Param('id') id: string) {

@@ -6,6 +6,8 @@ import { Collection, CollectionSchemaFactory } from '@modules/collection/schemas
 import { CollectionsRepository } from '@repositories/collections/collections.repository';
 import { RoomsRepository } from '@repositories/rooms/rooms.repository';
 import { Room, RoomSchemaFactory } from '@modules/room/schemas/room.schema';
+import { AreasRepository } from '@repositories/areas/areas.repository';
+import { Area, AreaSchema } from '@modules/area/schemas/area.schema';
 
 @Module({
   imports: [
@@ -21,8 +23,14 @@ import { Room, RoomSchemaFactory } from '@modules/room/schemas/room.schema';
         useFactory: RoomSchemaFactory,
       }
     ]),
+    MongooseModule.forFeature([
+      {
+        name: Area.name,
+        schema: AreaSchema
+      }
+    ]),
   ],
   controllers: [CollectionController],
-  providers: [CollectionService, CollectionsRepository, RoomsRepository],
+  providers: [CollectionService, CollectionsRepository, RoomsRepository, AreasRepository],
 })
 export class CollectionModule { }

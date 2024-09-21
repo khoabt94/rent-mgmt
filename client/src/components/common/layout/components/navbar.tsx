@@ -19,7 +19,7 @@ export default function Navbar() {
   // }, [location.pathname])
 
   return (
-    <div className={cn('flex px-4 py-2 w-full justify-between items-center transition-all border-b-[1px] border-b-gray-600 fixed top-0 backdrop-blur-xl z-50')}>
+    <div className={cn('flex px-4 h-[60px] py-2 w-full justify-between items-center transition-all border-b-[1px] border-b-gray-600 fixed top-0 backdrop-blur-xl z-50')}>
       {/* {user ? (<SheetTrigger>
         <AlignJustify />
       </SheetTrigger>) : null} */}

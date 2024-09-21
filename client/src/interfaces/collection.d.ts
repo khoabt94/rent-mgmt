@@ -4,11 +4,12 @@ import { Room } from "./room";
 /* eslint-disable @typescript-eslint/no-unused-vars */
 export namespace Collection {
     interface Detail {
+        _id: string
         collection_name: string;
         owner: string
         status: CollectionStatuses
         amount_collect: number;
-        room: Room;
+        room: Room.Detail;
         rent_fee: number;
         electricity_unit_price: number;
         water_unit_price: number;

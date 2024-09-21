@@ -11,7 +11,7 @@ import { useCreateCollection } from "@/hooks/queries"
 import { useToast } from "@/hooks/utils"
 import { Common, Room } from "@/interfaces"
 import { useRef } from "react"
-import { CreatCollectionForm } from "../form/create-form"
+import { CreatCollectionForm } from "../form/create-collection"
 import * as yup from 'yup';
 import { CollectionFormSchema } from "@/schema"
 
@@ -23,6 +23,7 @@ interface CreateCollectionFormRef {
 
 interface CreateCollectionDrawerProps extends Common.ModalProps {
   room: Room.Detail
+
 }
 
 

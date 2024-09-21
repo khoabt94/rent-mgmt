@@ -20,16 +20,12 @@ interface CreateRoomFormRef {
 }
 
 interface CRUDRoomModalProps extends Common.ModalProps {
-  initialValue: Room.Detail
+  initialValue?: Room.Detail
   area_id: string
 }
 
-enum MODE {
-  CREATE = 'CREATE',
-  EDIT = 'EDIT'
-}
 
-export function CRUDRoomDrawer({ initialValue, open = true, onClose, area_id }: CRUDRoomModalProps) {
+export function CRUDRoomDrawer({ initialValue, open = true, onClose, area_id, onOpenChange }: CRUDRoomModalProps) {
   const { toastError, toastSuccess } = useToast()
   const createRoomFormRef = useRef<CreateRoomFormRef>(null)
   const { mutateAsync: createRoomAsync } = useCreateRoom()
@@ -39,8 +35,7 @@ export function CRUDRoomDrawer({ initialValue, open = true, onClose, area_id }: 
     try {
       const payload = await createRoomFormRef.current?.getData();
       if (!payload) return;
-      const mode = initialValue ? MODE.EDIT : MODE.CREATE
-      if (mode === MODE.EDIT) {
+      if (initialValue) {
         await updateRoomAsync({
           room_id: initialValue._id,
           ...payload,
@@ -53,19 +48,21 @@ export function CRUDRoomDrawer({ initialValue, open = true, onClose, area_id }: 
         })
         toastSuccess("Tạo phòng thành công")
       }
-
+      onOpenChange?.(false)
       onClose?.()
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toastError(error.message)
     }
   }
-  const onOpenChange = (flag: boolean) => {
-    if (!flag) onClose?.()
-  }
+
 
   return (
-    <Drawer open={open} onOpenChange={onOpenChange}>
+    <Drawer open={open} onOpenChange={(flag) => {
+      if (!flag) onClose?.()
+      onOpenChange?.(flag)
+    }
+    }>
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>{initialValue ? 'Cập nhật phòng' : 'Tạo phòng mới'}</DrawerTitle>

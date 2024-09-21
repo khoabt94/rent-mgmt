@@ -171,6 +171,16 @@ export namespace Api {
   }
 
   namespace CollectionApi {
+
+    interface GetCollectionsQuery {
+      area?: string
+      isUnpaid?: boolean
+    }
+
+    interface GetCollectionsResponse extends BaseGetAllResponse<Collection.Detail> {
+
+    }
+
     interface CreateCollectionPayload {
       collection_name: string;
       room: string
@@ -180,11 +190,24 @@ export namespace Api {
       deduction: number;
     }
 
+    interface UpdateCollectionPayload {
+      end_electricity: number;
+      end_water: number;
+      other_fee: number;
+      deduction: number;
+      amount_collect: number
+      id: string
+    }
+
     interface GetLatestCollectionResponse extends BaseGetAllResponse<Collection.Detail> {
 
     }
 
     interface CreateCollectionResponse extends Collection.Detail {
+
+    }
+
+    interface UpdateCollectionResponse extends Collection.Detail {
 
     }
 

@@ -44,7 +44,7 @@ export const CreatRenteeForm = forwardRef(({ initialValue }: Props, ref) => {
             rentee_name: initialValue?.rentee_name || '',
             image_url: initialValue?.image_url || '',
             room: initialValue?.room?._id || '',
-            area: initialValue?.room?.area || '',
+            area: initialValue?.room?.area._id || '',
             address: initialValue?.address || '',
             dob: initialValue?.dob || '',
             owner: initialValue?.dob || user?._id,
@@ -59,8 +59,9 @@ export const CreatRenteeForm = forwardRef(({ initialValue }: Props, ref) => {
     const area = form.watch('area')
     const { data: dataRoom, refetch
     } = useGetRooms(
-        area || '',
-    )
+        area || '', {
+        enabled: !!initialValue
+    })
     const rooms = useMemo(() => {
         return dataRoom ? dataRoom?.items : []
     }, [dataRoom])

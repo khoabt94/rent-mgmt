@@ -5,12 +5,15 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CollectionsRepository } from '@repositories/collections/collections.repository';
 import { RoomsRepository } from '@repositories/rooms/rooms.repository';
 import { UpdateCollectionDto } from './dto/update-collection.dto';
+import { QueryCollectionDto } from './dto/query-collection.dto';
+import { AreasRepository } from '@repositories/areas/areas.repository';
 
 @Injectable()
 export class CollectionService {
   constructor(
     private readonly collectionsRepository: CollectionsRepository,
     private readonly roomsRepository: RoomsRepository,
+    private readonly areasRepository: AreasRepository,
   ) { }
 
   async validateOwner(ownerId: string, collectionId: string) {
@@ -62,16 +65,19 @@ export class CollectionService {
   async updateData(collectionId: string, updateCollectionDto: UpdateCollectionDto) {
     const findCollection = await this.getOneById(collectionId)
     if (!findCollection) throw new NotFoundException(ERRORS_DICTIONARY.INFO_NOT_FOUND)
-    const { begin_electricity, begin_water } = findCollection
-    const { end_electricity, end_water } = updateCollectionDto
+    const { begin_electricity, begin_water, amount_due } = findCollection
+    const { end_electricity, end_water, amount_collect } = updateCollectionDto
     if ((begin_electricity > end_electricity)) {
       throw new NotFoundException(ERRORS_DICTIONARY.UNSUITABLE_END_ELECTRICITY)
     }
     if ((begin_water > end_water)) {
       throw new NotFoundException(ERRORS_DICTIONARY.UNSUITABLE_END_WATER)
     }
-
-    await this.collectionsRepository.update(collectionId, updateCollectionDto)
+    await this.collectionsRepository.update(collectionId, {
+      ...updateCollectionDto,
+      status: amount_collect === amount_due ? CollectionStatuses.COLLECTED : undefined
+    })
+    return {}
   }
 
   getOneById(id: string) {
@@ -84,6 +90,21 @@ export class CollectionService {
     }, {
       sort: { 'created_at': -1 },
       limit: 1,
+    })
+  }
+
+  async getAll(queryCollectionDto: QueryCollectionDto) {
+    const { area, owner } = queryCollectionDto
+    const findArea = await this.areasRepository.getOneById(String(area))
+    if (!findArea) throw new NotFoundException(ERRORS_DICTIONARY.INFO_NOT_FOUND)
+
+    const { room } = findArea
+    return this.collectionsRepository.getManyByQuery({
+      owner,
+      room: { $in: room },
+      status: queryCollectionDto.isUnpaid ? CollectionStatuses.DRAFT : CollectionStatuses.COLLECTED
+    }, {
+      populate: 'room'
     })
   }
 }

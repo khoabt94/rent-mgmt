@@ -18,6 +18,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { forwardRef, useEffect, useImperativeHandle, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from 'yup';
+import { genCollectionInfo } from "../helpers";
 
 type Props = {
     room: Room.Detail
@@ -50,13 +51,23 @@ export const CreatCollectionForm = forwardRef(({ room }: Props, ref) => {
         deduction
     } = form.watch()
 
-    const noOfElectricity = end_electricity - begin_electricity
-    const noOfWater = end_water - begin_water
-    const electricityUnitPrice = area?.electricity_unit_price || 0
-    const waterUnitPrice = area?.water_unit_price || 0
-
-    const total = room.rent_fee + noOfElectricity * electricityUnitPrice + noOfWater * waterUnitPrice + other_fee - deduction
-
+    const {
+        amountDue,
+        amountElectricity,
+        amountWater,
+        noOfElectricity,
+        noOfWater,
+    } = genCollectionInfo({
+        end_electricity,
+        begin_electricity,
+        end_water,
+        begin_water,
+        electricity_unit_price: area?.electricity_unit_price || 0,
+        water_unit_price: area?.water_unit_price || 0,
+        rent_fee: room.rent_fee,
+        other_fee,
+        deduction
+    })
 
     useImperativeHandle(ref, () => ({
         getData: async () => {
@@ -133,7 +144,7 @@ export const CreatCollectionForm = forwardRef(({ room }: Props, ref) => {
                                     <p>
                                         x <span className="font-medium">{area?.electricity_unit_price || 0}</span>
                                         {" "}
-                                        = <span className="font-medium">{currencyFormatter(noOfElectricity * electricityUnitPrice) || 0}</span>
+                                        = <span className="font-medium">{currencyFormatter(amountElectricity) || 0}</span>
                                     </p>
                                 ) : <div className="h-5"></div>}
                             </TableCell>
@@ -167,7 +178,7 @@ export const CreatCollectionForm = forwardRef(({ room }: Props, ref) => {
                                     <p>
                                         x <span className="font-medium">{area?.water_unit_price || 0}</span>
                                         {" "}
-                                        = <span className="font-medium">{currencyFormatter(noOfWater * waterUnitPrice) || 0}</span>
+                                        = <span className="font-medium">{currencyFormatter(amountWater) || 0}</span>
                                     </p>
                                 ) : <div className="h-5"></div>}
                             </TableCell>
@@ -225,7 +236,7 @@ export const CreatCollectionForm = forwardRef(({ room }: Props, ref) => {
                     <TableFooter className="bg-slate-100">
                         <TableRow>
                             <TableCell colSpan={3} className="text-base">Tổng tiền</TableCell>
-                            <TableCell className="text-right text-base">{currencyFormatter(total)}</TableCell>
+                            <TableCell className="text-right text-base">{currencyFormatter(amountDue)}</TableCell>
                         </TableRow>
                     </TableFooter>
                 </Table>

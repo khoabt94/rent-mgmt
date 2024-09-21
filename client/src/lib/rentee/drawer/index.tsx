@@ -19,15 +19,10 @@ interface CreateRenteeFormRef {
 }
 
 interface CRUDTodoModalProps extends Common.ModalProps {
-    initialValue: Rentee.Detail
+    initialValue?: Rentee.Detail
 }
 
-enum MODE {
-    CREATE = 'CREATE',
-    EDIT = 'EDIT'
-}
-
-export function CreateEditRenteeDrawer({ initialValue, open = true, onClose }: CRUDTodoModalProps) {
+export function CreateEditRenteeDrawer({ initialValue, open = true, onOpenChange, onClose }: CRUDTodoModalProps) {
     const { toastError, toastSuccess } = useToast()
     const createRenteeFormRef = useRef<CreateRenteeFormRef>(null)
     const { mutateAsync: createAreaAsync } = useCreateRentee()
@@ -37,10 +32,9 @@ export function CreateEditRenteeDrawer({ initialValue, open = true, onClose }: C
             const payload = await createRenteeFormRef.current?.getData();
             if (!payload) return;
 
-            const mode = initialValue ? MODE.EDIT : MODE.CREATE
-            if (mode === MODE.EDIT) {
+            if (initialValue) {
                 await updateAreaAsync({
-                    id: initialValue._id,
+                    id: initialValue?._id,
                     ...payload
                 })
                 toastSuccess("Cập nhật người thuê thành công!")
@@ -49,6 +43,7 @@ export function CreateEditRenteeDrawer({ initialValue, open = true, onClose }: C
                 toastSuccess("Tạo người thuê thành công!")
             }
 
+            onOpenChange?.(false)
             onClose?.()
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
@@ -56,12 +51,14 @@ export function CreateEditRenteeDrawer({ initialValue, open = true, onClose }: C
         }
     }
 
-    const onOpenChange = (flag: boolean) => {
-        if (!flag) onClose?.()
-    }
 
     return (
-        <Drawer open={open} onOpenChange={onOpenChange}>
+        <Drawer open={open} onOpenChange={(flag) => {
+            if (!flag) onClose?.()
+            onOpenChange?.(flag)
+        }
+        }
+        >
             <DrawerContent className="h-[70dvh]">
                 <DrawerHeader>
                     <DrawerTitle>{initialValue ? `Cập nhật người thuê` : 'Tạo người thuê mới'}</DrawerTitle>
@@ -70,7 +67,12 @@ export function CreateEditRenteeDrawer({ initialValue, open = true, onClose }: C
                     <CreatRenteeForm ref={createRenteeFormRef} initialValue={initialValue} />
                 </DrawerDescription>
                 <DrawerFooter className="flex w-full gap-x-2 flex-row">
-                    <Button variant="outline" className="flex-1" onClick={() => onClose?.()}>Thoát</Button>
+                    <Button variant="outline" className="flex-1" onClick={() => {
+                        onOpenChange?.(false)
+                        onClose?.()
+                    }
+                    }
+                    >Thoát</Button>
                     <Button className="flex-1" onClick={onSubmit}>Gửi</Button>
                 </DrawerFooter>
             </DrawerContent>

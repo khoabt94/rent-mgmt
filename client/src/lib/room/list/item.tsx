@@ -4,12 +4,12 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
+import { currencyFormatter } from "@/helpers/currency";
+import { useOpenModal } from "@/hooks/utils/use-open-modal";
 import { Room } from "@/interfaces";
+import { cn } from "@/utils/tailwind";
 import { Pencil, Plus } from 'lucide-react';
 import { CRUDRoomDrawer } from "../drawer/crud-room";
-import { useOpenModal } from "@/hooks/utils/use-open-modal";
-import { currencyFormatter } from "@/helpers/currency";
-import { cn } from "@/utils/tailwind";
 import { CreateCollectionDrawer } from "@/lib/collection/drawer/create-collection";
 
 type RoomItemProps = {
@@ -33,7 +33,7 @@ export function RoomItem({ room }: RoomItemProps) {
   const isOccupied = rentees.length
 
   return (
-    <AccordionItem value={_id} className={cn("rounded-lg shadow px-4  relative", isOccupied ? 'bg-green-100' : 'bg-red-100')}>
+    <AccordionItem value={_id} className={cn("rounded-lg shadow px-4  relative", isOccupied ? 'bg-blue-100' : 'bg-yellow-100')}>
       <AccordionTrigger className="hover:no-underline gap-x-2 ">
         <div className="flex-1 flex items-center  justify-between">
           <p className="text-left w-[300px] truncate">

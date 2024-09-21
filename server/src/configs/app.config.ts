@@ -8,6 +8,7 @@ export default function configApp(app: INestApplication<any>) {
   app.useGlobalInterceptors(new TransformInterceptor());
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
+    transform: true,
     exceptionFactory: ValidationExceptionFactory,
   }))
 }
