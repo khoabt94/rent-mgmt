@@ -8,9 +8,10 @@ import { currencyFormatter } from "@/helpers/currency";
 import { useOpenModal } from "@/hooks/utils/use-open-modal";
 import { Collection } from "@/interfaces";
 import { cn } from "@/utils/tailwind";
-import { Pencil } from 'lucide-react';
+import { Info, Pencil } from 'lucide-react';
 import { genCollectionInfo } from "../helpers";
 import { UpdateCollectionDrawer } from "../drawer/update-collection";
+import { CollectionInfoDialog } from "../drawer/info";
 
 type CollectionItemProps = {
   collection: Collection.Detail
@@ -36,6 +37,11 @@ export function CollectionItem({ collection }: CollectionItemProps) {
   const openCreateRoomDrawer = () => {
     open(UpdateCollectionDrawer, {
       initialValue: collection,
+    })
+  }
+  const openInfoDialog = () => {
+    open(CollectionInfoDialog, {
+      collection,
     })
   }
   const isPaid = amount_due <= amount_collect
@@ -96,6 +102,9 @@ export function CollectionItem({ collection }: CollectionItemProps) {
           </p>
         </div>
         <div className="flex flex-col justify-end gap-y-2">
+          <Button type="button" variant={'ghost'} className="pr-0" onClick={openInfoDialog}>
+            <Info strokeWidth={1.5} />
+          </Button>
           <Button type="button" variant={'ghost'} className="pr-0" onClick={openCreateRoomDrawer}>
             <Pencil strokeWidth={1.5} />
           </Button>
