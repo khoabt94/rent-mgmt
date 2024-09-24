@@ -3647,6 +3647,16 @@ locate-path@^6.0.0:
   dependencies:
     p-locate "^5.0.0"
 
+lodash.foreach@^4.1.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.foreach/-/lodash.foreach-4.5.0.tgz#1a6a35eace401280c7f06dddec35165ab27e3e53"
+  integrity sha512-aEXTF4d+m05rVOAUG3z4vZZ4xVexLKZGF0lIxuHZ1Hplpk/3B6Z1+/ICICYRLm7c41Z2xiejbkCkJoTlypoXhQ==
+
+lodash.get@^4.0.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
+  integrity sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==
+
 lodash.includes@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/lodash.includes/-/lodash.includes-4.3.0.tgz#60bb98a87cb923c68ca1e51325483314849f553f"
@@ -3869,6 +3879,15 @@ mongodb@6.8.0:
     "@mongodb-js/saslprep" "^1.1.5"
     bson "^6.7.0"
     mongodb-connection-string-url "^3.0.0"
+
+mongoose-unique-validator@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/mongoose-unique-validator/-/mongoose-unique-validator-5.0.1.tgz#c14824d675997f25c1a1779c3223eabf15bd1103"
+  integrity sha512-nLu4PZCHDdOexyVrnWQHW1bwunxJdqyFPJEskZGuLY1GIUB/1+HQrWtFeeVpc7b2q6rCzbJK7DQ191hEivR/ew==
+  dependencies:
+    lodash.foreach "^4.1.0"
+    lodash.get "^4.0.2"
+    lodash.merge "^4.6.2"
 
 mongoose@^8.6.1:
   version "8.6.1"

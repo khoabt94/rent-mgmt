@@ -3,14 +3,14 @@ import { AreaService } from '@modules/area/area.service';
 import { AreaController } from '@modules/area/area.controller';
 import { AreasRepository } from '@repositories/areas/areas.repository';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Area, AreaSchema } from '@modules/area/schemas/area.schema';
+import { Area, AreaSchema, AreaSchemaFactory } from '@modules/area/schemas/area.schema';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
+    MongooseModule.forFeatureAsync([
       {
         name: Area.name,
-        schema: AreaSchema
+        useFactory: AreaSchemaFactory,
       }
     ]),
   ],

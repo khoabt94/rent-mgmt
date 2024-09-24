@@ -45,8 +45,6 @@ export const EditCollectionFormSchema = yup.object().shape({
             params: {},
             message: 'Số tiền thu phải nhỏ hơn tổng tiền',
             test: function (value) {
-                // You can access the price field with `this.parent`.
-                console.log(value, this.parent.amount_due);
                 return (value || 0) <= this.parent.amount_due
             },
         }),

@@ -19,6 +19,7 @@ export class Area extends BaseEntity {
     required: true,
     minlength: 5,
     maxlength: 50,
+    unique: true
   })
   @Transform(({ value }: { value: string }) => value.trim())
   area_name: string;
@@ -54,5 +55,10 @@ export class Area extends BaseEntity {
 
 export const AreaSchema = SchemaFactory.createForClass(Area);
 
+export const AreaSchemaFactory = () => {
+  const schema = AreaSchema;
+  schema.plugin(require('mongoose-unique-validator'))
+  return schema;
+};
 
 

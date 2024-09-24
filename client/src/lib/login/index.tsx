@@ -7,14 +7,12 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
 import { PasswordInput } from '@/components/ui/password-input'
-import { LoginFormSchema } from "@/schema"
-import * as yup from 'yup'
 import { useAuthActions } from "@/hooks/utils"
-import { Link } from "react-router-dom";
-import { siteConfig } from "@/configs/site"
+import { LoginFormSchema } from "@/schema"
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useForm } from 'react-hook-form'
+import * as yup from 'yup'
 
 export function LoginForm() {
     const { login } = useAuthActions()
@@ -58,9 +56,9 @@ export function LoginForm() {
                         </FormItem>
                     )}
                 />
-                <Link to={siteConfig.paths.forgotPassword()} className="ml-auto -mt-4">
+                {/* <Link to={siteConfig.paths.forgotPassword()} className="ml-auto -mt-4">
                     Quên mật khẩu
-                </Link>
+                </Link> */}
                 <Button type="submit" className='mt-5'>Xác nhận</Button>
             </form>
         </Form>
